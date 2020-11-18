@@ -4,13 +4,77 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fingerprint</title>
+    <!-- P5 Library -->
     <script src="./js/p5.js"> </script>
+    <!-- P5 Library END-->
+
+    <!-- Google Font -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+    <!-- Google Font END-->
+
+    <!-- css style -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- css style END-->
 
   </head>
   <body>
-  <h1>Testarea</h1>
-  <script type="text/javascript"
-           src="./js/sketch.js"> </script>
+  <h1>Fingerprint-Creation</h1>
+
+  <div class="main">
+	<h2>&nbsp;</h2>
+	<div>
+		<div>
+			<form action="xxxx.html" method="POST" enctype="multipart/form-data">
+				<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
+					<div class="manual">
+					<!--<input type="submit" class="choose" value="Browse">
+					<h3>OR</h3> -->
+						<input id="fileselection" type="file" name="fileselect[]" multiple="multiple" />
+						<div id="file">Drag And Drop Your Files Here</div>
+							<div id="status-messages">
+								<h4>Status</h4>
+							</div>
+					</div>
+          <div>
+            <label>Option</label>
+            <div>
+              <div>
+                <select required="">
+                  <option value="">Option-1</option>
+                  <option value="">Option-2</option>
+                  <option value="">Option-3</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="clear"></div>
+          </div>
+					<div>
+						<div>
+							<input type="submit" name="submit" value="Show">
+						</div>
+						<div class="clear"> </div>
+					</div>
+			</form>
+
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+
+<div class="fingerprint">
+<label>Fingerprint</label>
+<script class="fingerprint" type="text/javascript" src="./js/sketch.js"> </script>
+</div>
+
+<div class="footer">
+	<p>Digital Libraries</p>
+</div>
+
+<!-- js files -->
+
+<!-- js files END-->
 
   </body>
 </html>
