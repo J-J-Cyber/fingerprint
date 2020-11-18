@@ -1,6 +1,7 @@
 function setup() {
   // put setup code here
-  createCanvas(400, 400);
+  //createCanvas(400, 400);
+  windowResized();
 }
 
 function draw() {
@@ -12,4 +13,9 @@ function draw() {
     fill(255);
   }
   ellipse(mouseX, mouseY, 80, 80);
+}
+
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
