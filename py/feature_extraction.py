@@ -44,6 +44,7 @@ class FeatureExtractor(object):
 	richness_per_x_words = None
 	richness_per_sentence_stemmed = None
 	sentiment_per_sentence = None
+	digit_count_per_sentence = None
 
 	def __init__(self, exclude_stop_words = False, stem_words = False, filter_integers = False, exclude_duplicates = False, avg_word_len_per_sentence = False, sentence_length = False, avg_word_len_per_x_words = False, avg_word_len_per_x_sent = False, sentiment = False, digit_count_per_x_words = False, digit_count_per_x_sent = False):
 		self.exclude_stop_words = exclude_stop_words
@@ -173,6 +174,24 @@ class FeatureExtractor(object):
 			result.append(sentiment_analyzer.polarity_scores(sentence))
 		return result
 
+	def getDigitCountPerSentence(self, text):
+		result = []
+		digit_count = 0
+
+		tokens = sent_tokenize(text)
+
+		for sentence in tokens:
+			sentence = sentence.replace("\n", "")
+			word_tokens = self.tokenize(sentence)
+			for word in word_tokens:
+				# punctuations arent words
+				if not word in punctuations:
+					for char in word:
+						if char.isdigit():
+							digit_count += 1
+			result.append(digit_count)
+		return result
+
 	# Helper functions
 	def tokenize(self, text):
 		if self.stem_words:
@@ -205,6 +224,8 @@ class FeatureExtractor(object):
 		self.stem_words = False
 
 		self.sentiment_per_sentence = self.getSentimentPerSentence(text)
+
+		self.digit_count_per_sentence = self.getDigitCountPerSentence(text)
 
 def main():
 	fe = FeatureExtractor()
