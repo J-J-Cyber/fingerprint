@@ -59,21 +59,20 @@ class FeatureExtractor(object):
 
 		self.ps = PorterStemmer()
 		
-	# Helper functions
-	def tokenize(self, text):
-		if self.stem_words:
-			text = self.ps.stem(text)
-		if self.exclude_duplicates:
-			text = self.removeDuplicates(text)
-		if self.exclude_stop_words:
-			text = filterStopWords(text)
-		else:
-			text = word_tokenize(text)
-
-		return text
-
 	def removeDuplicates(self, text):
 		return list(dict.fromkeys(text.split()))
+
+	def removeStopWords(self, text):
+		result = []
+
+		word_tokens = word_tokenize(text)
+
+		stop_words = set(stopwords.words('english'))
+
+		for word in word_tokens:
+			if word not in stop_words:
+				result.append(word)
+		return result
 
 	def getAverageWordLengthPerSentence(self, text):
 		result = []
@@ -150,7 +149,7 @@ class FeatureExtractor(object):
 
 		for sentence in tokens:
 			sentence = sentence.replace("\n", " ")
-			word_tokens = self.tokenize(text)
+			word_tokens = self.tokenize(sentence)
 			for word in word_tokens:
 				# punctuations arent words
 				if not word in punctuations:
@@ -161,6 +160,20 @@ class FeatureExtractor(object):
 			word_stems = []
 			richness = 0
 		return result
+
+
+	# Helper functions
+	def tokenize(self, text):
+		if self.stem_words:
+			text = self.ps.stem(text)
+		if self.exclude_duplicates:
+			text = self.removeDuplicates(text)
+		if self.exclude_stop_words:
+			text = self.removeStopWords(text)
+		else:
+			text = word_tokenize(text)
+
+		return text
 
 	def getFeaturesFromFile(self, file):
 		# read file and extract sentences (clumped together)
@@ -174,8 +187,8 @@ class FeatureExtractor(object):
 
 		self.words_per_sentence, self.length_per_sentence = self.getAmountOfWordsInSentencesAndSentenceLength(text)
 
-
 		self.richness_per_sentence = self.getRichnessPerSentence(text)
+
 		self.stem_words = True
 		self.richness_per_sentence_stemmed = self.getRichnessPerSentence(text)
 		self.stem_words = False
@@ -183,7 +196,5 @@ class FeatureExtractor(object):
 def main():
 	fe = FeatureExtractor()
 	fe.getFeaturesFromFile(in_file)
-	print(fe.richness_per_sentence_stemmed)
-
 if __name__ == "__main__":
 	main()
