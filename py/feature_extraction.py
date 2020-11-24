@@ -232,11 +232,12 @@ class FeatureExtractor(object):
 
 def main():
 	# handleing command line arguments:
-	if len(sys.argv) <= 1:
-		print("Call with Name of file as string")
+	if len(sys.argv) <= 2:
+		print("Call with arg1=NameStringOfFile, arg2=FeatureNumber(1-8)")
 		exit(-1)
 
 	file_name = sys.argv[1]
+	file_feature = int(sys.argv[2])
 	data_path = os.getcwd()[:-3] + "\\data"
 
 	path_to_file = ""
@@ -244,8 +245,33 @@ def main():
 		for y in glob.glob(os.path.join(x[0], file_name)):
 			path_to_file = y
 
+	if path_to_file == "":
+		print("no file with given name found!")
+		exit(-2)
+
+	if (file_feature > 8) and (file_feature < 1):
+		print("no feature with given number available!")
+		exit(-3)
+
 	fe = FeatureExtractor()
 	fe.getFeaturesFromFile(path_to_file)
+
+	if file_feature == 1:
+		print(fe.average_word_length_per_sentence)
+	if file_feature == 2:
+		print(fe.words_per_sentence)
+	if file_feature == 3:
+		print(fe.length_per_sentence)
+	if file_feature == 4:
+		print(fe.richness_per_sentence)
+	if file_feature == 5:
+		print(fe.richness_per_x_words)
+	if file_feature == 6:
+		print(fe.richness_per_sentence_stemmed)
+	if file_feature == 7:
+		print(fe.sentiment_per_sentence)
+	if file_feature == 8:
+		print(fe.digit_count_per_sentence)
 
 if __name__ == "__main__":
 	main()
