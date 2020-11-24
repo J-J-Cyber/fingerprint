@@ -2,6 +2,7 @@ import numpy as np
 import nltk
 import sys
 import os
+import platform
 import glob
 from nltk.tokenize import sent_tokenize, word_tokenize, TextTilingTokenizer
 from nltk.stem import PorterStemmer
@@ -238,7 +239,12 @@ def main():
 
 	file_name = sys.argv[1]
 	file_feature = int(sys.argv[2])
-	data_path = os.getcwd()[:-3] + "\\data"
+
+	platform_name = platform.system();
+	if platform_name == "Darwin":
+		data_path = os.getcwd()[:-3] + "/data"
+	if platform_name == "Windows":
+		data_path = os.getcwd()[:-3] + "\\data"
 
 	path_to_file = ""
 	for x in os.walk(data_path):

@@ -24,7 +24,7 @@
 	<h2>&nbsp;</h2>
 	<div>
 		<div>
-			<form action="xxxx.html" method="POST" enctype="multipart/form-data">
+			<form method="POST" enctype="multipart/form-data" onclick="goPython()">
 				<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
 					<div class="manual">
 					<!--<input type="submit" class="choose" value="Browse">
@@ -32,7 +32,7 @@
 						<input id="fileselection" type="file" name="fileselect[]" multiple="multiple" />
 						<div id="file">Drag And Drop Your Files Here</div>
 							<div id="status-messages">
-								<h4>Status</h4>
+								<h4 id="status">Status</h4>
 							</div>
 					</div>
           <div>
@@ -40,9 +40,15 @@
             <div>
               <div>
                 <select required="">
-                  <option value="">Option-1</option>
-                  <option value="">Option-2</option>
-                  <option value="">Option-3</option>
+                  <option value="0">choose...</option>
+                  <option value="1">average word length</option>
+                  <option value="2">words per sentence</option>
+                  <option value="3">length per sentence</option>
+                  <option value="4">richness per sentence</option>
+                  <option value="5">richness per words</option>
+                  <option value="6">richness per sentence stemm</option>
+                  <option value="7">sentiment per sentence</option>
+                  <option value="8">digit count per sentence</option>
                 </select>
               </div>
             </div>
@@ -73,7 +79,8 @@
 </div>
 
 <!-- js files -->
-
+<script type="text/javascript" src="js/drag-and-drop.js"></script>
+<script type="text/javascript" src="js/call-python.js"></script>
 <!-- js files END-->
 
   </body>
