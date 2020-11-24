@@ -64,7 +64,7 @@ class FeatureExtractor(object):
 		if self.stem_words:
 			text = self.ps.stem(text)
 		if self.exclude_duplicates:
-			text = removeDuplicates(text)
+			text = self.removeDuplicates(text)
 		if self.exclude_stop_words:
 			text = filterStopWords(text)
 		else:
