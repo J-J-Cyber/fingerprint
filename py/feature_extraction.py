@@ -36,7 +36,10 @@ class FeatureExtractor(object):
 	digit_count_per_x_words = 	True
 	digit_count_per_x_sent = 	True
 	ps = None
+
 	average_word_length_per_sentence = None
+	words_per_sentence = None
+	length_per_sentence = None
 
 	def __init__(self, exclude_stop_words = False, stem_words = False, filter_integers = False, exclude_duplicates = False, avg_word_len_per_sentence = False, sentence_length = False, avg_word_len_per_x_words = False, avg_word_len_per_x_sent = False, richness_per_x_words = False, richness_per_x_sent = False, sentiment = False, digit_count_per_x_words = False, digit_count_per_x_sent = False):
 		self.exclude_stop_words = exclude_stop_words
@@ -114,6 +117,28 @@ class FeatureExtractor(object):
 
 		return result
 
+	def getAmountOfWordsInSentencesAndSentenceLength(self, text):
+		result1 = [] # amount of words in sentence
+		result2 = [] # length of sentence (character-wise)
+		sentence_length = 0
+		word_count = 0
+
+		tokens = sent_tokenize(text)
+
+		for sentence in tokens:
+			sentence = sentence.replace("\n", " ")
+			word_tokens = self.tokenize(sentence)
+			for word in word_tokens:
+				# punctuations arent words
+				if not word in punctuations:
+					word_count += 1
+					sentence_length += len(word)
+			result1.append(0 if word_count == 0 else word_count)
+			result2.append(0 if word_count == 0 else sentence_length)
+			word_count = 0 
+			sentence_length = 0
+
+		return result1, result2
 
 	def getFeaturesFromFile(self, file):
 		# read file and extract sentences (clumped together)
@@ -124,6 +149,8 @@ class FeatureExtractor(object):
 		self.average_word_length_per_sentence = self.getAverageWordLengthPerSentence(text)
 
 		self.average_word_length_per_x_words = self.getAverageWordLengthPerXWords(text, 100)
+
+		self.words_per_sentence, self.length_per_sentence = self.getAmountOfWordsInSentencesAndSentenceLength(text)
 
 	# average length of words total
 	#f_avgwordlen = getAverageWordLength(text)
