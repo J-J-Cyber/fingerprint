@@ -19,7 +19,7 @@ in_file = "./Juilius Caesar.txt"
 
 
 
-ps = PorterStemmer()
+
 
 class FeatureExtractor(object):
 	exclude_stop_words = 		True
@@ -35,6 +35,8 @@ class FeatureExtractor(object):
 	sentiment = 				True
 	digit_count_per_x_words = 	True
 	digit_count_per_x_sent = 	True
+	ps = None
+	average_word_length_per_sentence = None
 
 	def __init__(self, exclude_stop_words = False, stem_words = False, filter_integers = False, exclude_duplicates = False, avg_word_len_per_sentence = False, sentence_length = False, avg_word_len_per_x_words = False, avg_word_len_per_x_sent = False, richness_per_x_words = False, richness_per_x_sent = False, sentiment = False, digit_count_per_x_words = False, digit_count_per_x_sent = False):
 		self.exclude_stop_words = exclude_stop_words
@@ -50,11 +52,13 @@ class FeatureExtractor(object):
 		self.sentiment = sentiment
 		self.digit_count_per_x_words = digit_count_per_x_words
 		self.digit_count_per_x_sent = digit_count_per_x_sent
+
+		self.ps = PorterStemmer()
 		
 	# Helper functions
 	def tokenize(self, text):
 		if self.stem_words:
-			text = ps.stem(text)
+			text = self.ps.stem(text)
 		if self.exclude_duplicates:
 			text = removeDuplicates(text)
 		if self.exclude_stop_words:
@@ -88,13 +92,38 @@ class FeatureExtractor(object):
 			word_count = 0
 		return result
 
+	def getAverageWordLengthPerXWords(self, text, x):
+		result = []
+		word_len = 0
+		word_count = 0
+
+		tokens = self.tokenize(text)
+
+		for word in tokens:
+			# punctiations arent words
+			if not word in punctuations:
+				word_count += 1
+				word_len += len(word)
+			# every x words, add average length of words until then
+			if word_count == x:
+				result.append(0 if word_count == 0 else word_len / x)
+				word_len = 0
+				word_count = 0
+		# add average words of remainder of words
+		result.append(0 if word_count == 0 else word_len / word_count)
+
+		return result
+
 
 	def getFeaturesFromFile(self, file):
 		# read file and extract sentences (clumped together)
 		f = open(file, "r")
 		text = f.read().replace("-\r\r", "").replace("-\n", "")
 		f.close()
-		print(self.getAverageWordLengthPerSentence(text))
+
+		self.average_word_length_per_sentence = self.getAverageWordLengthPerSentence(text)
+
+		self.average_word_length_per_x_words = self.getAverageWordLengthPerXWords(text, 100)
 
 	# average length of words total
 	#f_avgwordlen = getAverageWordLength(text)
