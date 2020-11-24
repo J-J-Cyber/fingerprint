@@ -1,5 +1,8 @@
 import numpy as np
 import nltk
+import sys
+import os
+import glob
 from nltk.tokenize import sent_tokenize, word_tokenize, TextTilingTokenizer
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
@@ -7,7 +10,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 punctuations = [",", ".", ":", ";", "(", ")", "[", "]", "{", "}"]
 
-in_file = "./Juilius Caesar.txt"
+in_file = "./Julius Caesar.txt"
 
 
 # ==================================================================
@@ -228,8 +231,21 @@ class FeatureExtractor(object):
 		self.digit_count_per_sentence = self.getDigitCountPerSentence(text)
 
 def main():
+	# handleing command line arguments:
+	if len(sys.argv) <= 1:
+		print("Call with Name of file as string")
+		exit(-1)
+
+	file_name = sys.argv[1]
+	data_path = os.getcwd()[:-3] + "\\data"
+
+	path_to_file = ""
+	for x in os.walk(data_path):
+		for y in glob.glob(os.path.join(x[0], file_name)):
+			path_to_file = y
+
 	fe = FeatureExtractor()
-	fe.getFeaturesFromFile(in_file)
+	fe.getFeaturesFromFile(path_to_file)
 
 if __name__ == "__main__":
 	main()
