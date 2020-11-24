@@ -40,8 +40,11 @@ class FeatureExtractor(object):
 	average_word_length_per_sentence = None
 	words_per_sentence = None
 	length_per_sentence = None
+	richness_per_sentence = None
+	richness_per_x_words = None
+	richness_per_sentence_stemmed = None
 
-	def __init__(self, exclude_stop_words = False, stem_words = False, filter_integers = False, exclude_duplicates = False, avg_word_len_per_sentence = False, sentence_length = False, avg_word_len_per_x_words = False, avg_word_len_per_x_sent = False, richness_per_x_words = False, richness_per_x_sent = False, sentiment = False, digit_count_per_x_words = False, digit_count_per_x_sent = False):
+	def __init__(self, exclude_stop_words = False, stem_words = False, filter_integers = False, exclude_duplicates = False, avg_word_len_per_sentence = False, sentence_length = False, avg_word_len_per_x_words = False, avg_word_len_per_x_sent = False, sentiment = False, digit_count_per_x_words = False, digit_count_per_x_sent = False):
 		self.exclude_stop_words = exclude_stop_words
 		self.stem_words = stem_words
 		self.filter_integers = filter_integers
@@ -50,8 +53,6 @@ class FeatureExtractor(object):
 		self.sentence_length = sentence_length
 		self.avg_word_len_per_x_words = avg_word_len_per_x_words
 		self.avg_word_len_per_x_sent = avg_word_len_per_x_sent
-		self.richness_per_x_words = richness_per_x_words
-		self.richness_per_x_sent = richness_per_x_sent
 		self.sentiment = sentiment
 		self.digit_count_per_x_words = digit_count_per_x_words
 		self.digit_count_per_x_sent = digit_count_per_x_sent
@@ -140,6 +141,27 @@ class FeatureExtractor(object):
 
 		return result1, result2
 
+	def getRichnessPerSentence(self, text):
+		result = []
+		richness = 0
+		word_stems = []
+
+		tokens = sent_tokenize(text)
+
+		for sentence in tokens:
+			sentence = sentence.replace("\n", " ")
+			word_tokens = self.tokenize(text)
+			for word in word_tokens:
+				# punctuations arent words
+				if not word in punctuations:
+					if not word in word_stems:
+						richness += 1
+						word_stems.append(word)
+			result.append(richness)
+			word_stems = []
+			richness = 0
+		return result
+
 	def getFeaturesFromFile(self, file):
 		# read file and extract sentences (clumped together)
 		f = open(file, "r")
@@ -152,12 +174,16 @@ class FeatureExtractor(object):
 
 		self.words_per_sentence, self.length_per_sentence = self.getAmountOfWordsInSentencesAndSentenceLength(text)
 
-	# average length of words total
-	#f_avgwordlen = getAverageWordLength(text)
+
+		self.richness_per_sentence = self.getRichnessPerSentence(text)
+		self.stem_words = True
+		self.richness_per_sentence_stemmed = self.getRichnessPerSentence(text)
+		self.stem_words = False
 
 def main():
 	fe = FeatureExtractor()
 	fe.getFeaturesFromFile(in_file)
+	print(fe.richness_per_sentence_stemmed)
 
 if __name__ == "__main__":
 	main()
