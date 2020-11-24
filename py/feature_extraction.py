@@ -43,6 +43,7 @@ class FeatureExtractor(object):
 	richness_per_sentence = None
 	richness_per_x_words = None
 	richness_per_sentence_stemmed = None
+	sentiment_per_sentence = None
 
 	def __init__(self, exclude_stop_words = False, stem_words = False, filter_integers = False, exclude_duplicates = False, avg_word_len_per_sentence = False, sentence_length = False, avg_word_len_per_x_words = False, avg_word_len_per_x_sent = False, sentiment = False, digit_count_per_x_words = False, digit_count_per_x_sent = False):
 		self.exclude_stop_words = exclude_stop_words
@@ -161,6 +162,16 @@ class FeatureExtractor(object):
 			richness = 0
 		return result
 
+	def getSentimentPerSentence(self, text):
+		result = []
+
+		tokens = sent_tokenize(text)
+		sentiment_analyzer = SentimentIntensityAnalyzer()
+
+		for sentence in tokens:
+			sentence = sentence.replace("\n", " ")
+			result.append(sentiment_analyzer.polarity_scores(sentence))
+		return result
 
 	# Helper functions
 	def tokenize(self, text):
@@ -193,8 +204,11 @@ class FeatureExtractor(object):
 		self.richness_per_sentence_stemmed = self.getRichnessPerSentence(text)
 		self.stem_words = False
 
+		self.sentiment_per_sentence = self.getSentimentPerSentence(text)
+
 def main():
 	fe = FeatureExtractor()
 	fe.getFeaturesFromFile(in_file)
+
 if __name__ == "__main__":
 	main()
