@@ -30,15 +30,7 @@ class FeatureExtractor(object):
 	stem_words = 				True
 	filter_integers = 			True
 	exclude_duplicates =		True
-	avg_word_len_per_sentence = True
-	sentence_length = 			True
-	avg_word_len_per_x_words = 	True
-	avg_word_len_per_x_sent = 	True
-	richness_per_x_words = 		True
-	richness_per_x_sent = 		True
-	sentiment = 				True
-	digit_count_per_x_words = 	True
-	digit_count_per_x_sent = 	True
+
 	ps = None
 
 	average_word_length_per_sentence = None
@@ -50,18 +42,11 @@ class FeatureExtractor(object):
 	sentiment_per_sentence = None
 	digit_count_per_sentence = None
 
-	def __init__(self, exclude_stop_words = False, stem_words = False, filter_integers = False, exclude_duplicates = False, avg_word_len_per_sentence = False, sentence_length = False, avg_word_len_per_x_words = False, avg_word_len_per_x_sent = False, sentiment = False, digit_count_per_x_words = False, digit_count_per_x_sent = False):
+	def __init__(self, exclude_stop_words = False, stem_words = False, filter_integers = False, exclude_duplicates = False):
 		self.exclude_stop_words = exclude_stop_words
 		self.stem_words = stem_words
 		self.filter_integers = filter_integers
 		self.exclude_duplicates = exclude_duplicates
-		self.avg_word_len_per_sentence = avg_word_len_per_sentence
-		self.sentence_length = sentence_length
-		self.avg_word_len_per_x_words = avg_word_len_per_x_words
-		self.avg_word_len_per_x_sent = avg_word_len_per_x_sent
-		self.sentiment = sentiment
-		self.digit_count_per_x_words = digit_count_per_x_words
-		self.digit_count_per_x_sent = digit_count_per_x_sent
 
 		self.ps = PorterStemmer()
 		
