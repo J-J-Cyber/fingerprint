@@ -22,7 +22,8 @@ in_file = "./Julius Caesar.txt"
 # ==================================================================
 
 
-
+def test_call():
+	print("Hello from Feature Extractor!")
 
 
 class FeatureExtractor(object):
