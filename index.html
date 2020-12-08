@@ -24,16 +24,13 @@
 	<h2>&nbsp;</h2>
 	<div>
 		<div>
-            <form action="" method="post">
-                <input type="submit" name="test_post" value="TEST_POST" />
-            </form>
 
-			<form method="POST" enctype="multipart/form-data" onclick="goPython()">
+			<form method="POST" action="" enctype="multipart/form-data" onclick="">
 				<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
 					<div class="manual">
 					<!--<input type="submit" class="choose" value="Browse">
 					<h3>OR</h3> -->
-						<input id="fileselection" type="file" name="fileselect[]" multiple="multiple" />
+						<input id="fileselection" type="file" name="filename" multiple="multiple" />
 						<div id="file">Drag And Drop Your Files Here</div>
 							<div id="status-messages">
 								<h4 id="status">Status</h4>
@@ -43,7 +40,7 @@
             <label>Option</label>
             <div>
               <div>
-                <select required="">
+                <select name="calculation">
                   <option value="0">choose...</option>
                   <option value="1">average word length</option>
                   <option value="2">words per sentence</option>
@@ -62,7 +59,7 @@
           </div>
 					<div>
 						<div>
-							<input type="submit" name="submit" value="Show">
+							<input type="submit" name="test_post" value="Show"  /><!--name="submit" value="Show">-->
 						</div>
 						<div class="clear"> </div>
 					</div>

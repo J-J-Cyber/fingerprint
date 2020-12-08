@@ -24,30 +24,57 @@ class WebServer(SimpleHTTPRequestHandler):
 
 	def set_headers(self):
 		self.send_response(200)
-		self.send_header('Content-type', 'text/html')
-		self.end_headers()
+		# self.send_header('Content-type', 'text/html')
+		# self.end_headers()
 
 	def do_GET(self):
 
 		if self.path == "/":
 			self.set_headers()
 			self.path = "/index.html"
-			print(self.path)
+			# print(self.path)
 
-			return SimpleHTTPRequestHandler.do_GET(self)
+		return SimpleHTTPRequestHandler.do_GET(self)
 
 	def do_POST(self):
-		print("Handle POST request - (call from index.html with params) - then display with inline html?")
-		FeatExt.test_call()
-
 		'''Reads post request body'''
 		self.set_headers()
 		content_len = int(self.headers.get('Content-Length'))
-		post_body = self.rfile.read(content_len)
-		print(post_body)
-		# self.wfile.write("received post request:<br>{}".format(post_body))
+		post_body = self.rfile.read(content_len).decode("unicode_escape")
+		pb = str(post_body)
+		body_list = pb.split("-----------------------------")
+		del body_list[0], body_list[-1]
+		filename_temp = body_list[1].split("filename=\"")[1]
+		filename = ""
+		for char in filename_temp:
+			if char == "\"":
+				break
+			filename += char
 
+		calculation_temp = body_list[2].split("\r\n\r\n")[1]
+		calculation = ""
+		for char in calculation_temp:
+			if char == "\r":
+				break
+			calculation += char
 
+		print("filename: " + filename + " calc_feature: " + calculation)
+
+		### call feature stuff
+		# check if valid input
+		if filename == "" or calculation == "0":
+			return
+
+		result = FeatExt.handle_feature_call(filename, calculation)
+		print(result)
+		string_result = ""
+		for item in result:
+			string_result += str(item) + " "
+
+		# self.wfile.write(bytes("<html><head><title> Results: .</title></head>", "utf-8"))
+		self.wfile.write(bytes(string_result, "utf-8"))
+		# self.wfile.write(bytes("</body></html>", "utf-8"))
+		# self.wfile.close()
 
 
 if __name__ == "__main__":

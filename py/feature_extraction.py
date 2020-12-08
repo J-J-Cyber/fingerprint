@@ -26,6 +26,56 @@ def test_call():
 	print("Hello from Feature Extractor!")
 
 
+# function to be called from server.py
+def handle_feature_call(filename, feature):
+
+	file_name = filename
+	file_feature = int(feature)
+	result = ""
+	path_to_file = ""
+	data_path = ""
+
+	platform_name = platform.system()
+	if platform_name == "Darwin":
+		data_path = os.getcwd() + "/data"
+	if platform_name == "Windows":
+		data_path = os.getcwd() + "\\data"
+
+	for x in os.walk(data_path):
+		for y in glob.glob(os.path.join(x[0], file_name)):
+			path_to_file = y
+
+	if path_to_file == "":
+		print("no file with given name found!")
+		exit(-2)
+
+	if (file_feature > 8) and (file_feature < 1):
+		print("no feature with given number available!")
+		exit(-3)
+
+	fe = FeatureExtractor()
+	fe.getFeaturesFromFile(path_to_file)
+
+	if file_feature == 1:
+		result = fe.average_word_length_per_sentence
+	if file_feature == 2:
+		result = fe.words_per_sentence
+	if file_feature == 3:
+		result = fe.length_per_sentence
+	if file_feature == 4:
+		result = fe.richness_per_sentence
+	if file_feature == 5:
+		result = fe.richness_per_x_words
+	if file_feature == 6:
+		result = fe.richness_per_sentence_stemmed
+	if file_feature == 7:
+		result = fe.sentiment_per_sentence
+	if file_feature == 8:
+		result = fe.digit_count_per_sentence
+
+	return result
+
+
 class FeatureExtractor(object):
 	exclude_stop_words = 		True
 	stem_words = 				True
