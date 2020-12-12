@@ -7,10 +7,21 @@ let elements = 255;
 let dataPointList = [];
 let counter = 0;
 
+//for window-resizeCanvas
+
+
 function setup()
 {
-  windowResized();
+  //windowResized();
   //size(500 ,  700);
+  //for window-resizeCanvas
+  var canvasDiv = document.getElementById('canvas');
+  var width = canvasDiv.offsetWidth;
+  //console.log(width);
+  //console.log(height);
+  var sketchCanvas = createCanvas(width,450);
+  console.log(sketchCanvas);
+  sketchCanvas.parent("canvas");
   background(255);
   strokeWeight(1);
   noStroke();

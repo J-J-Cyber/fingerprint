@@ -145,3 +145,11 @@ input[type="file"]{
 {
   clear:both;
 }
+
+.compress
+{
+  width:100%%;
+  /* float:none; */
+  margin: 20px auto;
+  /* padding:20px; */
+}
