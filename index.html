@@ -15,7 +15,10 @@
     <!-- css style -->
     <link rel="stylesheet" href="css/style.css" media="all"/>
     <!-- css style END-->
-
+    
+    <!-- d3 JS-->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <!-- d3 JS END-->
   </head>
   <body>
   <h1>Fingerprint-Creation</h1>
@@ -72,12 +75,12 @@
 
 <div class="container">
   <div class="row">
-    <div id="canvas" class="col-md-6 compress"> xxxx
-      <script class="fingerprint" type="text/javascript" src="./js/sketch.js"> </script>
+    <div id="canvas_One" class="col-md-6 compress"> xxxx
+        <script class="fingerprint" type="text/javascript" src="./js/sketch.js"> </script>
     </div>
     <!--<script class="fingerprint" type="text/javascript" src="./js/sketch.js"> </script>-->
-    <div id="canvas" class="col-md-6"> yyyy
-      <script class="fingerprint" type="text/javascript" src="./js/sketch.js"> </script>
+    <div id="canvas_Two" class="col-md-6"> yyyy
+        <script class="fingerprint" type="text/javascript" src="./js/d3-heatmap.js"> </script>
     </div>
   </div>
   <div class="clear"></div>
@@ -107,8 +110,11 @@
 <script src="../../dist/js/bootstrap.min.js"></script>
 <!-- bootstrap-grid Library END-->
 
-<!-- js files END-->
 
+
+<!-- Load d3 color palettes -->
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<!-- Load d3 color palettes END-->
 
   </body>
 </html>

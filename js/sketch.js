@@ -8,20 +8,20 @@ let dataPointList = [];
 let counter = 0;
 
 //for window-resizeCanvas
-
+//var width = canvasDiv.offsetWidth;
 
 function setup()
 {
   //windowResized();
   //size(500 ,  700);
   //for window-resizeCanvas
-  var canvasDiv = document.getElementById('canvas');
+  var canvasDiv = document.getElementById('canvas_One');
   var width = canvasDiv.offsetWidth;
   //console.log(width);
   //console.log(height);
   var sketchCanvas = createCanvas(width,450);
-  console.log(sketchCanvas);
-  sketchCanvas.parent("canvas");
+  //console.log(sketchCanvas);
+  sketchCanvas.parent("canvas_One");
   background(255);
   strokeWeight(1);
   noStroke();
