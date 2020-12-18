@@ -176,7 +176,7 @@ input[type="file"]{
   width:100%%;
   /* float:none; */
   margin: 20px auto;
-  /* padding:20px; */
+  padding: 27px;
 }
 
 /*CSS-Blocks durch Backgroundfarbe sichtbar machen.*/
