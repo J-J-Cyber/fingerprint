@@ -79,12 +79,14 @@ input[type="submit"]
   font-size: 17px;
   cursor: pointer;
   letter-spacing: 3px;
+  margin-top: 21px;
   margin-left: 33%;
   -webkit-transition: 0.5s all; /* Safari */
   transition:  0.5s all;
-	-moz-transition: 0.5s all;
-	-ms-transition:0.5 all;
-	-o-transition:0.5s all;
+  font-family: 'Open Sans';
+  -moz-transition: 0.5s all;
+  -ms-transition:0.5 all;
+  -o-transition:0.5s all;
 }
 
 input[type="submit"]:hover
@@ -95,16 +97,16 @@ input[type="submit"]:hover
 select, select.dropdown
 {
   color: #000;
-  border: none;
+  /* border: none; */
   margin-bottom: 1.2em;
-  padding: 0em 1em .4em 0;
+  padding: 1em 1em 1em 1em;
   width: 100%;
   border-bottom: 1px solid #999;
   font-size: .7em;
-	letter-spacing:.5px;
+  letter-spacing:.5px;
   outline: none;
   background-color: transparent;
-	font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .manual
