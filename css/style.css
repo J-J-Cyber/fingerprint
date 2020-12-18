@@ -11,17 +11,23 @@ html,body,div,span,h1,h2,h3,h4,h5,h6,p,a,img,ol,ul,nav,li,form,table,tbody,tfoot
   padding:0;
 }
  
-body { 
-    min-height: inherit; 
-    margin: 0; 
-    padding: 0; 
+body {
+    /* min-height: inherit; */
+    margin: 0;
+    /* padding: 0; */
     width: 100%;
     margin-right: 10px;
-    margin-left: 10px
+    margin-left: 10px;
 }
 h1,h2,h3,h4,h5,h6,p,label
 {
 	font-family: 'Open Sans', sans-serif;
+}
+
+html
+{
+	height:100%;
+	overflow:auto;
 }
 
 h1,label
@@ -141,13 +147,20 @@ input[type="file"]{
 	box-shadow: inset 0 3px 4px #888;
 }
 
+.footer
+{
+  position:relative;
+  bottom:0;
+  width:100%;
+}
+
 .footer p
 {
   color:#000;
   font-size: 13px;
   text-align: center;
   letter-spacing: 3px;
-  margin-bottom:33px;
+  margin-bottom: 33px;
 }
 
 .clear
@@ -164,27 +177,21 @@ input[type="file"]{
   /* padding:20px; */
 }
 
-#d3_dataviz
+/*CSS-Blocks durch Backgroundfarbe sichtbar machen.*/
+.canvas
 {
-	/*background:red;
-	display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 100%;
-    vertical-align: top;
-    overflow: hidden;
-    */
+	/*background-color: aqua;*/
+	/*height:400px; */
 }
 
-#d3_dataviz-content
+.row
 {
-	
-	display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    
+	/*background-color: brown;*/
 }
 
-
+.container
+{
+	/*background-color: darkviolet;*/
+	width:80%;
+}
 
