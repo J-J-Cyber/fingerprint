@@ -11,8 +11,6 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 punctuations = [",", ".", ":", ";", "(", ")", "[", "]", "{", "}"]
 
-in_file = "./Julius Caesar.txt"
-
 
 # ==================================================================
 #                          IMPORTANT
@@ -245,7 +243,57 @@ class FeatureExtractor(object):
 
 		return text
 
-	def getFeaturesFromFile(self, file):
+	def chunkList(self, n, array):
+		avg = len(array) / float(n * n)
+		result = []
+		row = []
+		last = 0.0
+
+		while last < len(array):
+			tmp = array[int(last):int(last + avg)]
+			row.append(0 if not tmp else round(sum(tmp)/len(tmp), 2))
+			if len(row) == n and (last + avg) < len(array):
+				result.append(row)
+				row = []
+			last += avg
+		#result.append(row)
+
+		return result
+
+	def chunkDict(self, n, array):
+		avg = len(array) / float(n * n)
+		result = []
+		row = []
+		last = 0.0
+
+		while last < len(array):
+			tmp = array[int(last):int(last + avg)]
+			tmpdict = {}
+			neg = 0.0
+			neu = 0.0
+			pos = 0.0
+			compound = 0.0
+
+			for d in tmp:
+				neg += list(d.values())[0]
+				neu += list(d.values())[1]
+				pos += list(d.values())[2]
+				compound += list(d.values())[3]
+
+			tmpdict['neg'] = round(neg / len(tmp), 2)
+			tmpdict['neu'] = round(neu / len(tmp), 2)
+			tmpdict['pos'] = round(pos / len(tmp), 2)
+			tmpdict['compound'] = round(compound / len(tmp), 2)
+
+			row.append(tmpdict)
+			if len(row) == n and (last + avg) < len(array):
+				result.append(row)
+				row = []
+			last += avg
+		
+		return result
+
+	def getFeaturesFromFile(self, file, n = -1):
 		# read file and extract sentences (clumped together)
 		f = open(file, "r")
 		text = f.read().replace("-\r\r", "").replace("-\n", "")
@@ -266,6 +314,15 @@ class FeatureExtractor(object):
 		self.sentiment_per_sentence = self.getSentimentPerSentence(text)
 
 		self.digit_count_per_sentence = self.getDigitCountPerSentence(text)
+		if n != -1:
+			print(f"Dividing into {n}x{n} matrix!")
+			self.average_word_length_per_sentence = self.chunkList(n, self.average_word_length_per_sentence)
+			self.average_word_length_per_x_words = self.chunkList(n, self.average_word_length_per_x_words)
+			self.words_per_sentence = self.chunkList(n, self.words_per_sentence)
+			self.length_per_sentence = self.chunkList(n, self.length_per_sentence)
+			self.richness_per_sentence = self.chunkList(n, self.richness_per_sentence)
+			self.sentiment_per_sentence = self.chunkDict(n, self.sentiment_per_sentence)
+			self.digit_count_per_sentence = self.chunkList(n, self.digit_count_per_sentence)
 
 def main():
 	# handleing command line arguments:
@@ -294,9 +351,9 @@ def main():
 	if (file_feature > 8) and (file_feature < 1):
 		print("no feature with given number available!")
 		exit(-3)
-
+	
 	fe = FeatureExtractor()
-	fe.getFeaturesFromFile(path_to_file)
+	fe.getFeaturesFromFile(path_to_file, 20)
 
 	if file_feature == 1:
 		print(fe.average_word_length_per_sentence)
