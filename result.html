@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Fingerprint</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!--Authors-->
     <meta http-equiv="author" content="The Incredibles"/>
     <!--Authors END-->
@@ -12,7 +12,7 @@
     <!--prevent Browser from caching-->
     <meta http-equiv="pragma" content="no-cache"/>
     <!--prevent Browser from caching END-->
-    
+
     <!-- Bootstrap-Grid Library -->
     <link rel="stylesheet" href="css/bootstrap.css" type="text/css" media="all"/>
     <!-- Bootstrap-Grid Library END-->
@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="css/slick.css" media="all" />
     <link rel="stylesheet" href="css/slick-theme.css" media="all" />
     <!-- css style END-->
-    
+
     <!-- d3 JS-->
     <script src="https://d3js.org/d3.v4.js"></script>
     <!-- d3 JS END-->
@@ -35,58 +35,11 @@
   <body>
   <h1>Fingerprint-Creation</h1>
 
-  <div class="main">
-	<h2>&nbsp;</h2>
-	<div>
-		<div>
-
-			<form method="POST" action="" enctype="multipart/form-data" ><!--onclick="">-->
-				<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
-					<div class="manual">
-					<!--<input type="submit" class="choose" value="Browse">
-					<h3>OR</h3> -->
-						<input id="fileselection" type="file" name="filename" multiple="multiple" />
-						<div id="file">Drag And Drop Your Files Here</div>
-							<div id="status-messages">
-								<h4 id="status">Status</h4>
-							</div>
-					</div>
-          <div>
-            <label>Option</label>
-            <div>
-              <select name="calculation" size="8" multiple="multiple">
-                  <option value="1">average word length</option>
-                  <option value="2">words per sentence</option>
-                  <option value="3">length per sentence</option>
-                  <option value="4">richness per sentence</option>
-                  <option value="5">richness per words</option>
-                  <option value="6">richness per sentence stemm</option>
-                  <option value="7">sentiment per sentence</option>
-                  <option value="8">digit count per sentence</option>
-                </select>
-            </div>
-          </div>
-          <div>
-            <div class="clear"></div>
-          </div>
-					<div>
-						<div>
-							<input type="submit" name="test_post" value="Show"  /><!--name="submit" value="Show">-->
-						</div>
-						<div class="clear"> </div>
-					</div>
-			</form>
-
-		</div>
-		<div class="clear"></div>
-	</div>
 </div>
 
 <div class="container">
   <div class="row">
     <!-- Insert-Results -->
-
-	<!-- Insert-Results END-->
   </div>
   <div class="clear"></div>
 </div>

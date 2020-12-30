@@ -9,9 +9,18 @@ from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
+# additional libs for heatmaps
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
 punctuations = [",", ".", ":", ";", "(", ")", "[", "]", "{", "}"]
 
-
+suptitles = ["LEL",
+             "Average Word Length", "Words per Sentence",
+             "Length per Sentence", "Richness per Sentence",
+             "Richness per Words", "Richness per Sentence-stemm",
+             "Sentiment per Sentence", "Digit Count per Sentence"]
 # ==================================================================
 #                          IMPORTANT
 # ==================================================================
@@ -25,53 +34,77 @@ def test_call():
 
 
 # function to be called from server.py
-def handle_feature_call(filename, feature):
+def handle_feature_call(filenames, features):
 
-	file_name = filename
-	file_feature = int(feature)
-	result = ""
-	path_to_file = ""
-	data_path = ""
+	result_dict = {}
+	result_name_list = []
+	for filename in filenames:
+		file_name = filename
+		file_feature = int(features[0])
+		result = ""
+		path_to_file = ""
+		data_path = ""
 
-	platform_name = platform.system()
-	if platform_name == "Darwin":
-		data_path = os.getcwd() + "/data"
-	if platform_name == "Windows":
-		data_path = os.getcwd() + "\\data"
+		platform_name = platform.system()
+		if platform_name == "Darwin":
+			data_path = os.getcwd() + "/data"
+		if platform_name == "Windows":
+			data_path = os.getcwd() + "\\data"
 
-	for x in os.walk(data_path):
-		for y in glob.glob(os.path.join(x[0], file_name)):
-			path_to_file = y
+		for x in os.walk(data_path):
+			for y in glob.glob(os.path.join(x[0], file_name)):
+				path_to_file = y
 
-	if path_to_file == "":
-		print("no file with given name found!")
-		exit(-2)
+		if path_to_file == "":
+			print("no file with given name found!")
+			exit(-2)
 
-	if (file_feature > 8) and (file_feature < 1):
-		print("no feature with given number available!")
-		exit(-3)
+		if (file_feature > 8) and (file_feature < 1):
+			print("no feature with given number available!")
+			exit(-3)
 
-	fe = FeatureExtractor()
-	fe.getFeaturesFromFile(path_to_file)
+		fe = FeatureExtractor()
+		fe.getFeaturesFromFile(path_to_file, 20)
 
-	if file_feature == 1:
-		result = fe.average_word_length_per_sentence
-	if file_feature == 2:
-		result = fe.words_per_sentence
-	if file_feature == 3:
-		result = fe.length_per_sentence
-	if file_feature == 4:
-		result = fe.richness_per_sentence
-	if file_feature == 5:
-		result = fe.richness_per_x_words
-	if file_feature == 6:
-		result = fe.richness_per_sentence_stemmed
-	if file_feature == 7:
-		result = fe.sentiment_per_sentence
-	if file_feature == 8:
-		result = fe.digit_count_per_sentence
+		for feature in features:
+			file_feature = int(feature)
+			if file_feature == 1:
+				result = fe.average_word_length_per_sentence
+			if file_feature == 2:
+				result = fe.words_per_sentence
+			if file_feature == 3:
+				result = fe.length_per_sentence
+			if file_feature == 4:
+				result = fe.richness_per_sentence
+			if file_feature == 5:
+				result = fe.richness_per_x_words
+			if file_feature == 6:
+				result = fe.richness_per_sentence_stemmed
+			if file_feature == 7:
+				result = fe.sentiment_per_sentence
+			if file_feature == 8:
+				result = fe.digit_count_per_sentence
 
-	return result
+			if len(result) < 20:
+				result.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+			result_dict[str(filename[:-4]) + str(feature) + ".png"] = result
+			result_name_list.append(str(filename[:-4]) + str(feature) + ".png")
+
+	# handle image creation
+	for name in result_dict:
+		data = result_dict[name]
+		print(data)
+		df = pd.DataFrame(data, columns=["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t"])
+		sns.heatmap(df, annot=False, cmap="viridis", cbar=True)
+		#if os.path.isfile("img/" + name):
+			#sns.heatmap.clf()
+			#continue
+		global suptitles
+		plt.suptitle(suptitles[int(name[-5])])
+		plt.savefig("img/" + name)
+		plt.clf()
+
+	return result_dict
 
 
 class FeatureExtractor(object):
