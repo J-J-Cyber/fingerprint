@@ -121,6 +121,7 @@ class FeatureExtractor(object):
 	richness_per_sentence = None
 	richness_per_x_words = None
 	richness_per_sentence_stemmed = None
+	richness_per_x_words_stemmed = None
 	sentiment_per_sentence = None
 	digit_count_per_sentence = None
 
@@ -234,6 +235,34 @@ class FeatureExtractor(object):
 			richness = 0
 		return result
 
+	def getRichnessPerXWords(self, text, x):
+		result = []
+		richness = 0
+		word_count = 0
+		word_stems = []
+
+		tokens = sent_tokenize(text)
+
+		for sentence in tokens:
+			sentence = sentence.replace("\n", " ")
+			word_tokens = self.tokenize(sentence)
+			for word in word_tokens:
+				# punctiations arent words
+				if not word in punctuations:
+					word_count += 1
+					if not word in word_stems:
+						richness += 1
+						word_stems.append(word)
+				# every x words, append richness of X words
+				if word_count == x:
+					result.append(richness)
+					richness = 0
+					word_count = 0
+					word_stems = []
+		result.append(richness)
+
+		return result
+
 	def getSentimentPerSentence(self, text):
 		result = []
 
@@ -289,7 +318,8 @@ class FeatureExtractor(object):
 				result.append(row)
 				row = []
 			last += avg
-		#result.append(row)
+		if len(result) == 19:
+			result.append(row)
 
 		return result
 
@@ -323,7 +353,8 @@ class FeatureExtractor(object):
 				result.append(row)
 				row = []
 			last += avg
-		
+		if len(result) == 19:
+			result.append(row)
 		return result
 
 	def getFeaturesFromFile(self, file, n = -1):
@@ -340,8 +371,11 @@ class FeatureExtractor(object):
 
 		self.richness_per_sentence = self.getRichnessPerSentence(text)
 
+		self.richness_per_x_words = self.getRichnessPerXWords(text, 100)
+
 		self.stem_words = True
 		self.richness_per_sentence_stemmed = self.getRichnessPerSentence(text)
+		self.richness_per_x_words_stemmed = self.getRichnessPerXWords(text, 100)
 		self.stem_words = False
 
 		self.sentiment_per_sentence = self.getSentimentPerSentence(text)
@@ -354,6 +388,9 @@ class FeatureExtractor(object):
 			self.words_per_sentence = self.chunkList(n, self.words_per_sentence)
 			self.length_per_sentence = self.chunkList(n, self.length_per_sentence)
 			self.richness_per_sentence = self.chunkList(n, self.richness_per_sentence)
+			self.richness_per_x_words = self.chunkList(n, self.richness_per_x_words)
+			self.richness_per_sentence_stemmed = self.chunkList(n, self.richness_per_sentence_stemmed)
+			self.richness_per_x_words_stemmed = self.chunkList(n, self.richness_per_x_words_stemmed)
 			self.sentiment_per_sentence = self.chunkDict(n, self.sentiment_per_sentence)
 			self.digit_count_per_sentence = self.chunkList(n, self.digit_count_per_sentence)
 
@@ -397,13 +434,15 @@ def main():
 	if file_feature == 4:
 		print(fe.richness_per_sentence)
 	if file_feature == 5:
-		print(fe.richness_per_x_words)
+		print(np.array(fe.richness_per_x_words).shape)
 	if file_feature == 6:
 		print(fe.richness_per_sentence_stemmed)
 	if file_feature == 7:
-		print(fe.sentiment_per_sentence)
+		print(fe.richness_per_x_words_stemmed)
 	if file_feature == 8:
-		print(fe.digit_count_per_sentence)
+		print(fe.sentiment_per_sentence)
+	if file_feature == 9:
+		print(np.array(fe.digit_count_per_sentence).shape)
 
 if __name__ == "__main__":
 	main()
