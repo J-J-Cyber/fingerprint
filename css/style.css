@@ -1,0 +1,199 @@
+
+html,body,div,span,h1,h2,h3,h4,h5,h6,p,a,img,ol,ul,nav,li,form,table,tbody,tfoot,thead,tr,th,td,video
+{
+  border:0;
+  /* margin:0; */
+  padding:0;
+  font-size:100%;
+  font:inherit;
+  vertical-align:baseline;
+  margin:0;
+  padding:0;
+}
+ 
+body {
+    /* min-height: inherit; */
+    margin: 0;
+    /* padding: 0; */
+    width: 100%;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+h1,h2,h3,h4,h5,h6,p,label
+{
+	font-family: 'Open Sans', sans-serif;
+}
+
+html
+{
+	height:100%;
+	overflow:auto;
+}
+
+h1,label
+{
+  color:#000;
+  font-size:40px;
+  text-align:center;
+  letter-spacing: 3px;
+  margin-top:33px;
+}
+
+.main
+{
+	width:37%;
+	margin:40px auto;
+	background:#fff;
+  /*
+  -webkit-box-shadow: 3px 3px 5px 6px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ *
+  -moz-box-shadow:    3px 3px 5px 6px #ccc;  /* Firefox 3.5 - 3.6 *
+  box-shadow:         3px 3px 5px 6px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 *
+  */
+}
+
+#status-messages {
+  border: 1px solid #ff9900;
+  margin: 15px 0;
+  padding: 15px 10px;
+	color:#ff9900;
+}
+
+label
+{
+  margin-bottom: .3em;
+  text-transform: uppercase;
+  font-size: 1em;
+  font-weight: 600;
+  color: #000;
+  display: block;
+}
+
+input[type="submit"]
+{
+  width: 33%;
+  border: none;
+  padding: 10px 0;
+  background: #00BCD4;
+  background: #ff9900;
+  color: #fff;
+  font-size: 17px;
+  cursor: pointer;
+  letter-spacing: 3px;
+  margin-top: 21px;
+  margin-left: 33%;
+  -webkit-transition: 0.5s all; /* Safari */
+  transition:  0.5s all;
+  font-family: 'Open Sans';
+  -moz-transition: 0.5s all;
+  -ms-transition:0.5 all;
+  -o-transition:0.5s all;
+}
+
+input[type="submit"]:hover
+{
+  background: #146EB4;
+}
+
+select, select.dropdown
+{
+  color: #000;
+  /* border: none; */
+  margin-bottom: 1.2em;
+  padding: 1em 1em 1em 1em;
+  width: 100%;
+  border-bottom: 1px solid #999;
+  font-size: .7em;
+  letter-spacing:.5px;
+  outline: none;
+  background-color: transparent;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.manual
+{
+	position:relative;
+}
+
+input[type="file"]{
+    position: absolute;
+    top: 0px;
+    left: 23%;
+    padding: 8px 5px;
+    opacity: 0;
+    cursor: pointer;
+}
+#file
+{
+  border: 2px dashed #146eb4;
+  /*display: none;*/
+  margin: 0 0 25px;
+  padding: 25px 0;
+  font-weight: 600;
+  text-align: center;
+  color: #146eb4;
+  border-radius: 0px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  cursor: default;
+  font-size: 20px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+#file.hover
+{
+	color: #f00;
+	border-color: #f00;
+	border-style: solid;
+	box-shadow: inset 0 3px 4px #888;
+}
+
+.footer
+{
+  position:relative;
+  bottom:0;
+  width:100%;
+}
+
+.footer p
+{
+  color:#000;
+  font-size: 13px;
+  text-align: center;
+  letter-spacing: 3px;
+  margin-bottom: 33px;
+}
+
+.clear
+/* clear float, THAT FLOAT IS ALWAYS SHIT */
+{
+  clear:both;
+}
+
+.compress
+{
+  width:100%%;
+  /* float:none; */
+  margin: 20px auto;
+  padding: 27px;
+}
+
+/*CSS-Blocks durch Backgroundfarbe sichtbar machen.*/
+.canvas
+{
+	/*background-color: aqua;*/
+	/*height:400px; */
+}
+
+.row
+{
+	/*background-color: brown;*/
+}
+
+.container
+{
+	/*background-color: darkviolet;*/
+	width:80%;
+}
+

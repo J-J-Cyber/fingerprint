@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <title>Fingerprint</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--Authors-->
+    <meta http-equiv="author" content="The Incredibles"/>
+    <!--Authors END-->
+
+    <!--prevent Browser from caching-->
+    <meta http-equiv="pragma" content="no-cache"/>
+    <!--prevent Browser from caching END-->
+    
+    <!-- Bootstrap-Grid Library -->
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css" media="all"/>
+    <!-- Bootstrap-Grid Library END-->
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <!-- Google Font END-->
+
+    <!-- css style -->
+    <link rel="stylesheet" href="css/style.css" media="all" />
+    <link rel="stylesheet" href="css/slick.css" media="all" />
+    <link rel="stylesheet" href="css/slick-theme.css" media="all" />
+    <!-- css style END-->
+    
+    <!-- d3 JS-->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <!-- d3 JS END-->
+  </head>
+  <body>
+  <h1>Fingerprint-Creation</h1>
+
+  <div class="main">
+	<h2>&nbsp;</h2>
+	<div>
+		<div>
+
+			<form method="POST" action="" enctype="multipart/form-data" ><!--onclick="">-->
+				<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
+					<div class="manual">
+					<!--<input type="submit" class="choose" value="Browse">
+					<h3>OR</h3> -->
+						<input id="fileselection" type="file" name="filename" multiple="multiple" />
+						<div id="file">Drag And Drop Your Files Here</div>
+							<div id="status-messages">
+								<h4 id="status">Status</h4>
+							</div>
+					</div>
+          <div>
+            <label>Option</label>
+            <div>
+              <select name="calculation" size="8" multiple="multiple">
+                  <option value="1">average word length</option>
+                  <option value="2">words per sentence</option>
+                  <option value="3">length per sentence</option>
+                  <option value="4">richness per sentence</option>
+                  <option value="5">richness per 100 words</option>
+                  <option value="6">richness per sentence stemm</option>
+                  <option value="7">richness per 100 words stemm</option>
+                  <option value="8">sentiment per sentence</option>
+                  <option value="9">digit count per sentence</option>
+                </select>
+            </div>
+          </div>
+          <div>
+            <div class="clear"></div>
+          </div>
+					<div>
+						<div>
+							<input type="submit" name="test_post" value="Show"  /><!--name="submit" value="Show">-->
+						</div>
+						<div class="clear"> </div>
+					</div>
+			</form>
+
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <!-- Insert-Results -->
+
+	<!-- Insert-Results END-->
+  </div>
+  <div class="clear"></div>
+</div>
+
+<div class="footer">
+  <label>Fingerprint</label>
+	<p>Digital Libraries</p>
+</div>
+
+<!-- js files -->
+<!-- ================================================== -->
+<!-- Placed at the end of the document so the page loads faster -->
+<!-- own JS-->
+<script type="text/javascript" src="./js/drag-and-drop.js"></script>
+<!-- own JS END-->
+
+<!-- P5 Library -->
+<script src="./js/p5.js"> </script>
+<!-- P5 Library END-->
+
+<!-- jQuery Library -->
+<script src="./js/jquery.min.js"> </script>
+<!-- jQuery Library END-->
+
+<!-- bootstrap-grid Library -->
+<script src="./js/bootstrap.min.js"></script>
+<!-- bootstrap-grid Library END-->
+
+<!-- Load d3 color palettes -->
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<!-- Load d3 color palettes END-->
+
+<!-- Load slack -->
+<script src="./js/slick.js"></script>
+<script src="./js/slick-image-loading.js"></script>
+<!-- Load slack END-->
+
+
+
+  </body>
+</html>
