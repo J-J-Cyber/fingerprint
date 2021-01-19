@@ -19,8 +19,9 @@ punctuations = [",", ".", ":", ";", "(", ")", "[", "]", "{", "}"]
 suptitles = ["LEL",
              "Average Word Length", "Words per Sentence",
              "Length per Sentence", "Richness per Sentence",
-             "Richness per Words", "Richness per Sentence-stemm",
-             "Sentiment per Sentence", "Digit Count per Sentence"]
+             "Richness per 100 Words", "Richness per Sentence-stemm",
+             "Richness per 100 words stemm", "Sentiment per Sentence",
+              "Digit Count per Sentence"]
 # ==================================================================
 #                          IMPORTANT
 # ==================================================================
@@ -81,12 +82,14 @@ def handle_feature_call(filenames, features):
 			if file_feature == 6:
 				result = fe.richness_per_sentence_stemmed
 			if file_feature == 7:
-				result = fe.sentiment_per_sentence
+				result = fe.richness_per_x_words_stemmed
 			if file_feature == 8:
+				result = fe.sentiment_per_sentence
+			if file_feature == 9:
 				result = fe.digit_count_per_sentence
 
-			if len(result) < 20:
-				result.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+			#if len(result) < 20:
+			#	result.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 			result_dict[str(filename[:-4]) + str(feature) + ".png"] = result
 			result_name_list.append(str(filename[:-4]) + str(feature) + ".png")
 
