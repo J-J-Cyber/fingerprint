@@ -1,10 +1,10 @@
 import socketserver
 from http.server import BaseHTTPRequestHandler, SimpleHTTPRequestHandler, HTTPServer
 import time, os, platform
-import py.feature_extraction as FeatExt
+import feature_extraction as FeatExt
 
 HOST_NAME = "localhost"
-SERVER_PORT = 8080
+SERVER_PORT = 42091
 
 """
 HOME_DIR = ""
@@ -104,8 +104,16 @@ class WebServer(SimpleHTTPRequestHandler):
 
 		for file in file_name_list:
 			for feature in calculation_num_list:
-				temp_image = canvas_img.replace("IMAGEPATH", "img/" + file[:-4] + feature + ".png")
-				canvas_main_pre += temp_image
+				if feature != '8':
+					temp_image = canvas_img.replace("IMAGEPATH", "img/" + file[:-4] + feature + ".png")
+					canvas_main_pre += temp_image
+				else:
+					temp_image = canvas_img.replace("IMAGEPATH", "img/" + file[:-4] + " Neg" + feature + ".png")
+					canvas_main_pre += temp_image
+					temp_image = canvas_img.replace("IMAGEPATH", "img/" + file[:-4] + " Neu" + feature + ".png")
+					canvas_main_pre += temp_image
+					temp_image = canvas_img.replace("IMAGEPATH", "img/" + file[:-4] + " Pos" + feature + ".png")
+					canvas_main_pre += temp_image
 			temp_res = canvas_res.replace("FILENAME", file[:-4])
 			temp_res = temp_res.replace("IMAGECANVAS", canvas_main_pre)
 			canvas_main += temp_res
