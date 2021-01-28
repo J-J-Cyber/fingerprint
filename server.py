@@ -4,7 +4,7 @@ import time, os, platform
 import feature_extraction as FeatExt
 
 HOST_NAME = "localhost"
-SERVER_PORT = 42091
+SERVER_PORT = 8080
 
 """
 HOME_DIR = ""
