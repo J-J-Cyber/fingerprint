@@ -14,7 +14,6 @@
 \usepackage{listings}
 \usepackage[english]{babel}
 
-
 % Default fixed font does not support bold face
 \DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
 \DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
@@ -26,7 +25,7 @@
 \definecolor{deepgreen}{rgb}{0,0.5,0}
 
 
-%------------------------------------------------------------------------------------- (DO NOT DELETE)
+%------------------------------------------------------------------------------------- (Python)
 % Python style for highlighting
 \newcommand\pythonstyle{\lstset{
 language        =Python,
@@ -76,7 +75,7 @@ Jürgen Suntinger-Schrampf\inst{1}\orcidID{00630894}}
 
 %------------------------------------------------------------------------------------- (Abstract)
 \begin{abstract}
-The human is the best pattern recognition system on the whole world and has no problems when it comes to detecting outliers or finding patterns in a visual way. However, when it comes to textual data, the human brain has problems detecting or recognizing such things in an efficient way. At this point the computer comes into play, which extracts a sum of so called features (characteristics), which can then visualized just the way the human prefers it most, Visually. In our case, that happened over heatmaps which should help the user to do a vizual analysis under the help of interactive tools to find the so called literal-\textbf{fingerprints} (characteristic) of an author.
+The human is the best pattern recognition system in the whole world and has no problems when it comes to detecting outliers or finding patterns in a visual way. However, when it comes to textual data, the human brain has problems detecting or recognizing such things in an efficient way. At this point, the computer comes into play which extracts a sum of so called features (characteristics), which can then be illustrated just the way the human prefers it most, Visually. In our case, that happened through heatmaps which should help the user to do a visual analysis under the help of interactive tools to find the so called literal-\textbf{fingerprints} (characteristic) of an author.
 
 \end{abstract}
 \keywords{Document fingerprint  \and Digital libraries \and Visualisation}
@@ -90,8 +89,6 @@ In Computer Science comes something called \textit{Natural Language Processing} 
 
 What if you could search through a text based on the emotions of sentences? What if you could find texts that are easy to read based on sentence length? What if you could find texts to improve your language skills based on sentence complexity? What if you could use NLP to train a Neural Network to guess the genre of a text? This is the motivation that made us develop a tool that is able to create a visual "fingerprint" of a document to compare and contrast entire texts against others simultaneously on top of being able to compare and contrast sections within a given text.
 
-%##################################################################
-
 %------------------------------------------------------------------------------------- (Related Work)
 % section with similar systems you know
 \section{Related Work}
@@ -104,6 +101,16 @@ During our research process we found some resources which where quite related to
     \caption{(a) Word frequency per Document \href{https://www.123rf.com/photo_36990141_stock-vector-infographics-with-sound-waves-on-world.html}{Copyright to Vladimir Arkatov} (b) \label{density-plot} Our Implementation}
     \label{fig:circle-digram}
 \end{figure}
+
+xxxxxxx
+Calculating the position of points in a circle
+\href{https://stackoverflow.com/questions/5300938/calculating-the-position-of-points-in-a-circle}{Stackoverflow}
+
+
+curveVertex
+dabei werden die Punktkorrdinaten auf einem Kreis berechnet und danach einzeln mittels vertex kurve verbunden
+
+
 
 \begin{figure}
     \centering
@@ -206,31 +213,52 @@ Based on research process, we started to build up our fingerprint-implementation
 
 %------------------------------------------------------------------------------------- (Implemented-Userflow)
 \subsection{Description of supported user operations (workflows)}
-muss der user etwas machen
+Front-End:
+\begin{itemize}
+    \item file drag \& drop to the system
+    \item single-feature-selection
+    \item multi-feature-selection
+    \item interactive GUI
+    \item responsive GUI
+\end{itemize}
+Back-End:
+\begin{itemize}
+    \item Feature Extraction \\
+    Using NLP, we should be able to obtain features from a given text. Features such as word length, sentence length, sentiment of a sentence, etc\ldots We developed the file \texttt{feature\_extraction.py} to take care of just that. We used the programming language \texttt{Python} for this task due to it being incredibly powerful and easy to use in data-related tasks. Furthermore the \texttt{Natural Language Toolkit} library is supported by \texttt{Python}. This tool allows the programmer to use symbolic and statistical natural language processing for the English language.
+    \item Natural Language Toolkit \\
+    The \texttt{Natural Language Toolkit} (or NLTK) library is downloaded and installed into one's \texttt{Python} environment through the following line of code:
+    %------------------------------------------------------------------------------------- (Python-NLTK-1)
+    \lstinputlisting[language=Python]{doc/src/nltk-1.py}
+    From the NLTK library we use the following functions:
+    \begin{itemize}
+        \item Sentence Tokenizer: from a text, return a list of the entire text separated per sentence.
+        \item Word Tokenizer: from a text, return a list of the entire text separated per word.
+        \item Porter Stemmer: from a given word, return the root of it using a Porter Stemmer algorithm.
+        \item Stop Words: returns a list of all stop words from the English language (words with no inherent meaning - such as the words "the" and "a".)
+        \item Sentiment Intensity Analyser: from a sentence, return a dictionary containing the negative, neutral, positive, and compound values from that sentence.
+    \end{itemize}
+    We imported them into our \texttt{Python} file as such:
+    %------------------------------------------------------------------------------------- (Python-NLTK-2)
+    \lstinputlisting[language=Python]{doc/src/nltk-2.py}
+\end{itemize}
+We will now elaborate on two method functions of the supported. One of them is able to extract features from the document, and the other is able to package the results into a format useful for heatmap creation.
+%------------------------------------------------------------------------------------- (Python-getAverageWordLengthPerXWords)
+%\lstinputlisting[language=Python]{doc/src/getAverageWordLengthPerXWords.py}
+
+In the function \texttt{getAverageWordLengthPerXWords}, we are trying to get the average word length every \texttt{x} amount of words. To do this, we must first tokenize the \texttt{parameter} using a tokenizer from the NLTK library. The variables \texttt{tokens} contains a list of all words in the text. We then iterate through the words. At every word, we increase our word counter variable \texttt{word\_count} by one and our word length counter \texttt{word\_len} by the size of the current word we are looking at. Notices that we are only looking at words that are not exclusively a punctuation. Once our \texttt{word\_count} counter reaches \texttt{x}, then we append the value of the \texttt{word\_len} variable divided by our \texttt{x} onto our \textit{result} list. We then reset our two counter variables. Once we have gone through all words, if there are words that we have not accounted for yet, we append them now. Finally, we return our \texttt{result} list. This list will contain the average length of words every \texttt{x} words. 
+
+The other features follow a similar structure. If we want to get the average sentence length per \texttt{x} words, we would follow the snippet above but change the tokenizer method from using the word tokenizer to the sentence tokenizer. If we cared about getting the average sentence length of every length, we disregard the counters and the \texttt{x} variable. If we wanted to calculate richness, we would stem the words using the Porter Stemmer, which computes the ``roots" of words. We then count unique words. To calculate sentiment, we tokenize sentences and then pass them through the sentiment analyzer from the NLTK library. This returns a dictionary with values for positive, negative, neutral, and compound sentiment.
+
+The next step in our feature extraction script is to grab this resulting list and converting it into an $\texttt{n} \times \texttt{n}$ matrix. In our demo, we set our \texttt{n} to $20$. The way we did it can be seen in the snippet below.
+
+%------------------------------------------------------------------------------------- (Python-chunkList)
+%\lstinputlisting[language=Python]{doc/src/chunkList.py}
 
 
+The function \textbf{chunkList} grabs a value for \texttt{n} and an array. We want to turn this list into a list of \texttt{n} lists each consisting of \texttt{n} amount of elements. To do this, it first compute the \texttt{avg} variable. This variable lets the algorithm how many elements of the array should be grouped together to end up with our required size. It divides the length of the array by $\texttt{n}^2$. The \texttt{while} loop iterates through the array initially grouping an \texttt{avg} amount of elements, grabbing the mean and appending it onto a \texttt{tmp} list. The \texttt{last} variable is added with \texttt{avg}. In the next iteration, the loop groups an \texttt{avg} amount of elements starting from the \textit{last} index. This is done \texttt{n} times. Once this occurs, the \texttt{tmp} list, which now contains \texttt{n} elements is added to the \texttt{result} variable. The \texttt{tmp} list is then reset. The loop continues until the \texttt{result} variable is of size $\texttt{n} \times \texttt{n}$ and the list is returned. 
 
-hier dann die Dinge beschreiben
-Web-App
-Drag and Drop
-Single-feature-selection
-Multi-feature-selection
-File-Selection
-interactive GUI
-dynamic display
-(formely) dynamic display with meta-data information
-vergleich zweier oder der selben datei (doppeltes laden erforderlich)
+This $\texttt{n} \times \texttt{n}$ list is fed to another script which is focused on creating a heatmap based off of the values in this list. For the chunking of the sentiment of words, since we get a dictionary, we grab the first values of all dictionaries and put them into one list, then another list for the second value in the dictionary, and same for the third list and value. We then chunk all three lists as we do the other lists. 
 
-
-
-
-%wie legt man die parameter bei word-stam fest
-%wie berechnet man die sachen
-%am ende kann man die heatmaps visuell analysieren und ein ranking machen
-
-
-
-%>>>>>>>>>>>
 
 %------------------------------------------------------------------------------------- (Demo)
 \section{Application demonstration}
@@ -242,300 +270,76 @@ vergleich zweier oder der selben datei (doppeltes laden erforderlich)
     \centering
     \subfigure[]{\includegraphics[width=1\textwidth]{doc/img/process.jpg}} 
     \caption{(a) The overall user process and calculatin flow}
-    \label{fig:metdata}
+    \label{fig:overall process}
 \end{figure}
 The overall process is, that the user starts the server 
 
 
-
-da Bild dann screenshotkombination einsetzne
-
-
-
-
-
 %------------------------------------------------------------------------------------- (Demo-Exploration)
 \subsection{Describe how and where searching and exploring are possible}
-am ende der pipeline werden die features (result features ) aufgelistet und ermöglichen dem nutzer die suche nach mustern.
 
-%------------------------------------------------------------------------------------- (Demo-Findings)
-\subsection{Describe interesting findings and observations you made when applying your solution to the data}
+When the pipeline is run through the calculated heatmap-results are shown up in a grid layout. Giving the user the ability to visually analyse and compare them just side by side. Even the comparison of multiple features for one file is possible, if the user loads the file more than once.
+\begin{figure}
+    \centering
+    \subfigure[]{\includegraphics[width=1\textwidth]{doc/img/result/analysis-explaination.png}} 
+    \caption{(a) Analysis overview}
+    \label{fig:process analysis}
+\end{figure}
 
-da gibt es einen unterschied tragedy und comedy
-historie und poetry.
-da erkennt, macneh charaktere kurze sätze, andere wiederum längere.
-oder lange wörter ve
-
-bei historie, da sind megr zahlen und mehr datumsangaben
-
-
-
-%>>>>>>>>>>> Hauptpunkt
-%------------------------------------------------------------------------------------- (Future)
-\section{Discussion of advantages, limitations and future developments to do}
-
-1ter punkt
-es können mehrere file und features verechnet werden und verblichen werden  wir können bilder abspeichern wir sind platformunabhöngo, da es eine webapp ist und e s so auch aam handy funtkoiniert.
-es gibt 9 verschiedene features.
-
-2ter punkt
-bei limitationen
-es können nur textdateien verarbeitet werden.
-statische bilder (kein direkter verweis zum text)
-nur optischer vergleich möglich.
-
-3ter punkt
-verweis von heatmap auf text
-dynamisches ranking
-verbesserte interaktivit
-metadateneinblendung
-sortiermöglichkeit der dateien per drag and drop
-fileuploadverbesserung
-sortierung der dokumente
-(AM ENDE SOLLEN DIE FEATURES ÜBERWIEGEN, NICHT VERGESSEN)
-
-
-%------------------------------------------------------------------------------------- (References)
-\section{References}
-
-da eine onlineplatofrm für fingerprints naschauen, einen host
-https://www.semanticscholar.org/paper/Literature-Fingerprinting%3A-A-New-Method-for-Visual-Keim-Oelke/474178dae941d135190ba98cfb7c3aa67924b09b
-
-https://www.dw.com/en/whodunit-how-fingerprinting-has-inspired-writers/a-19516521
-
-
-https://physicsworld.com/a/literary-fingerprints/
-
-The foundation of our design was the result of three references
-
-WIE
-
-References Hints for the report:
-- NOT more than 10 pages + appendix
-- Make use of images/screenshots for your results
-
-- Make use of diagrams to show system architcute or workflows
-
-
-
-
-
-
-
-
-%------------------------------------------------------------------------------------- (References-ENDE)
-
-
-
-%######################################
-
-
-
-
-
-projekt-solution
-
-development environment, steht im readme
-
-implemented functionality
-da kommen die 8 punkte hin
-
-Used data
-Collect the entire works of William Shakespeare
-http://shakespeare.mit.edu/
-
-was war die größte dokumente die processed wurden.
-damit verbunden ist eine längere berechnungszeit
-
-wollten eine cleane oberfläche, die interactive ist
-
-WIP
-similar systems you know
-
-WIE
-o Your project solution
-
-WIP
-Development environment
-- language
-- libraries
-- ...
-
-WIP
-Implemented functionalities
-
-stamming
-
-
-WIE
-experimitieren mit feates 
-how to configure stamming
-welche parameter haben wir gewählt
-
-experimentierten mit 
-sonetten und comedy, um unterschiede zu erkennen.
-erkenntnis was, dass die einen charaktere mehr reden als andere
-gab es outlier
+XXXXXXXXX
 gab es data preparation, wir haben die daten ausgegeglidert.
 
 
-cluster-meta data wurde anfang implementiert, um schneller dinge interpretieren oder vergleichen zu können, wurde aber vom browser bei multipler dateiauswahl nur für eine datei ausgegeben
+%------------------------------------------------------------------------------------- (Demo-Findings)
+\subsection{Describe interesting findings and observations you made when applying your solution to the data}
+As you can see, the comparison of two comedy works shows a significant difference between the sentence length.
 
 \begin{figure}
     \centering
-    \subfigure[]{\includegraphics[width=0.24\textwidth]{img/Antony and Cleopatra Neg8.png}} 
-    \subfigure[]{\includegraphics[width=0.24\textwidth]{img/Antony and Cleopatra Neg8.png}} 
-    \subfigure[]{\includegraphics[width=0.24\textwidth]{img/Antony and Cleopatra Neg8.png}}
-    \caption{(a) blah (b) blah (c) blah}
+    \subfigure[]{\includegraphics[width=0.4\textwidth]{doc/img/result/compare1.png}}
+    \subfigure[]{\includegraphics[width=0.4\textwidth]{doc/img/result/compare2.png}}
+    \caption{(a) Comedy (b) Comedy}
     \label{fig:foobar}
 \end{figure}
 
-
-
-
-WIP
-Description of supported user operations (workflows)
-
-WIE
-Application demonstration
-- Demonstrate the supported user operations by a walkthrough of a hypothetical
-user Alice considering the used data
-
-- Describe how and where searching and exploring are possible
-- Describe interesting findings and observations you made when applying your solution to the data
-- Discussion of advantages
-- Discuss limitations and future developments to do
-           
-
-
-\begin{figure}
-    \centering
-    \subfigure[]{\includegraphics[width=0.9\textwidth]{img/process.jpg}} 
-    \caption{(a) Process}
-    \label{fig:process}
-\end{figure}
-
-
-
-
-
-
-%------------------------------------------------------------------------------------- (Handling)
-\section{Handling}
-
-
-WIP
-user tasks to support
-
-es gibt keine einschränkung bei der anzahl der dateien TXT
-limits gibt es keine
-
-
-%------------------------------------------------------------------------------------- (Problems-ENDE)
-
-
-%------------------------------------------------------------------------------------- (XXXX)
-\section{XXXX}
-
-
-WIE
+Also a significant difference was visible by comparing:
 \begin{itemize}
-    \item[+] XXXXXXXXXXXX
-    \item[-] YYYYYYYYYYYY
+    \item history against poetry
+    \item comedy-charakter-1 against comedy-charakter-2 \\ meaning that one used long-and the otherone short-words.
+    \item history used more numbers and dates compared to other documents
+    \item different characters \\ meaning that some talk more than others.
 \end{itemize}
 
 
-Probleme
-Javascript biliotheken mit interaktiven heatmap 
-heatmap mit hover effect for interactivity was only loaded each time for one file. 
-that was the reason why we changed the plan and implemented it in such a way that the server creates heatmaps as images and creates a result page out of them.
-
-multiple platformen, windows mac coused during programming problems becuase of path types
-
-the browser cache was a BIG PROBLEM !!! Dieser leert sich nach dem versenden der Dateien an den Server und erfordert einen Neustart der GUI-oberfläche, da durch diesen Vorgang das benötigte Javascript file vom speicher geflashed wird.
-
-
-mehr merhmacher dateiasuwahl muss derzeit noch zusätzlich die datei über der gewollten dateien ausgewählt werden. 
-
-
-Calculating the position of points in a circle
-\href{https://stackoverflow.com/questions/5300938/calculating-the-position-of-points-in-a-circle}{Stackoverflow}
-
-
-curveVertex
-dabei werden die Punktkorrdinaten auf einem Kreis berechnet und danach einzeln mittels vertex kurve verbunden
-
-
-%------------------------------------------------------------------------------------- (XXXXX-ENDE)
-
-
-
-
-
-
-
-
-%------------------------------------------------------------------------------------- (Development of our Tool)
-\section{Development}
-In this section we divide the three areas of software engineering that were developed in the creation of our tool. 
-
-Implemented Featus
-
-
-\subsection{Back-End: Feature Extraction}
-
-Using NLP, we should be able to obtain features from a given text. Features such as word length, sentence length, sentiment of a sentence, etc\ldots We developed the file \texttt{feature\_extraction.py} to take care of just that. We used the programming language \texttt{Python} for this task due to it being incredibly powerful and easy to use in data-related tasks. Furthermore the \texttt{Natural Language Toolkit} library is supported by \texttt{Python}. This tool allows the programmer to use symbolic and statistical natural language processing for the English language.
-
-\subsubsection{Natural Language Toolkit}
-
-The \texttt{Natural Language Toolkit} (or NLTK) library is downloaded and installed into one's \texttt{Python} environment through the following line of code:
-
-%------------------------------------------------------------------------------------- (Python-NLTK-1)
-\lstinputlisting[language=Python]{doc/src/nltk-1.py}
-%------------------------------------------------------------------------------------- (Python-NLTK-1-ENDE)
-From the NLTK library we use the following functions:
+%>>>>>>>>>>> Hauptpunkt
+%------------------------------------------------------------------------------------- (advantages, limitations and future)
+\section{Discussion of advantages, limitations and future developments to do}
+The whole system enables the user to:
 \begin{itemize}
-    \item Sentence Tokenizer: from a text, return a list of the entire text separated per sentence.
-    \item Word Tokenizer: from a text, return a list of the entire text separated per word.
-    \item Porter Stemmer: from a given word, return the root of it using a Porter Stemmer algorithm.
-    \item Stop Words: returns a list of all stop words from the English language (words with no inherent meaning - such as the words "the" and "a".)
-    \item Sentiment Intensity Analyser: from a sentence, return a dictionary containing the negative, neutral, positive, and compound values from that sentence.
+    \item[+] easily detect significant outliers
+    \item[+] process more than one files at once
+    \item[+] calculate more than one feature
+    \item[+] compare different file at once
+    \item[+] use it also as web-app (mobile)
+    \item[+] use a clean designed GUI
+    \item[+] save heatmap results as image
+    \item[+] be platform independent because of client server architecture
+    \item[+] there is no file amount limitation \\ \textbf{hint}: the more files the longer calculation takes
+    \item[+] take a look at the entire work of \href{http://shakespeare.mit.edu/}{William Shakespeare}
+    \item[--] process only TXT-files
+    \item[--] use Firefox on desktop
+    \item[--] only see static images \\ interactive version is deactivated in background
+    \item[--] not see the direct reference to the text
+    \item[f] reference from heatmap to text
+    \item[f] even better interactivity with the results \\e.g. sorting, drag\&drop of results
+    \item[f] see metadata
+    \item[f] Handle the Browser-cache-Flash after sending it to the server
+    \item[f] automatically detect the text-genre \\e.g. historic or  non-historic text
 \end{itemize}
 
-We imported them into our \texttt{Python} file as such:
-
-%------------------------------------------------------------------------------------- (Python-NLTK-2)
-\lstinputlisting[language=Python]{doc/src/nltk-2.py}
-%------------------------------------------------------------------------------------- (Python-NLTK-2-ENDE)
-%------------------------------------------------------------------------------------- (Python-FeatureExtractor-ENDE)
-We will now elaborate on two method functions. One of them is able to extract features from the document, and the other is able to package the results into a format useful for heatmap creation.
-
-%------------------------------------------------------------------------------------- (Python-getAverageWordLengthPerXWords)
-%\lstinputlisting[language=Python]{doc/src/getAverageWordLengthPerXWords.py}
-%------------------------------------------------------------------------------------- (Python-getAverageWordLengthPerXWords-ENDE)
-
-In the function \texttt{getAverageWordLengthPerXWords}, we are trying to get the average word length every \texttt{x} amount of words. To do this, we must first tokenize the \texttt{parameter} using a tokenizer from the NLTK library. The variables \texttt{tokens} contains a list of all words in the text. We then iterate through the words. At every word, we increase our word counter variable \texttt{word\_count} by one and our word length counter \texttt{word\_len} by the size of the current word we are looking at. Notices that we are only looking at words that are not exclusively a punctuation. Once our \texttt{word\_count} counter reaches \texttt{x}, then we append the value of the \texttt{word\_len} variable divided by our \texttt{x} onto our \textit{result} list. We then reset our two counter variables. Once we have gone through all words, if there are words that we have not accounted for yet, we append them now. Finally, we return our \texttt{result} list. This list will contain the average length of words every \texttt{x} words. 
-
-The other features follow a similar structure. If we want to get the average sentence length per \texttt{x} words, we would follow the snippet above but change the tokenizer method from using the word tokenizer to the sentence tokenizer. If we cared about getting the average sentence length of every length, we disregard the counters and the \texttt{x} variable. If we wanted to calculate richness, we would stem the words using the Porter Stemmer, which computes the ``roots" of words. We then count unique words. To calculate sentiment, we tokenize sentences and then pass them through the sentiment analyzer from the NLTK library. This returns a dictionary with values for positive, negative, neutral, and compound sentiment.
-
-The next step in our feature extraction script is to grab this resulting list and converting it into an $\texttt{n} \times \texttt{n}$ matrix. In our demo, we set our \texttt{n} to $20$. The way we did it can be seen in the snippet below.
-
-%------------------------------------------------------------------------------------- (Python-chunkList)
-%\lstinputlisting[language=Python]{doc/src/chunkList.py}
-%------------------------------------------------------------------------------------- (Python-chunkList-ENDE)
-
-The function \textbf{chunkList} grabs a value for \texttt{n} and an array. We want to turn this list into a list of \texttt{n} lists each consisting of \texttt{n} amount of elements. To do this, it first compute the \texttt{avg} variable. This variable lets the algorithm how many elements of the array should be grouped together to end up with our required size. It divides the length of the array by $\texttt{n}^2$. The \texttt{while} loop iterates through the array initially grouping an \texttt{avg} amount of elements, grabbing the mean and appending it onto a \texttt{tmp} list. The \texttt{last} variable is added with \texttt{avg}. In the next iteration, the loop groups an \texttt{avg} amount of elements starting from the \textit{last} index. This is done \texttt{n} times. Once this occurs, the \texttt{tmp} list, which now contains \texttt{n} elements is added to the \texttt{result} variable. The \texttt{tmp} list is then reset. The loop continues until the \texttt{result} variable is of size $\texttt{n} \times \texttt{n}$ and the list is returned. 
-
-This $\texttt{n} \times \texttt{n}$ list is fed to another script which is focused on creating a heatmap based off of the values in this list. For the chunking of the sentiment of words, since we get a dictionary, we grab the first values of all dictionaries and put them into one list, then another list for the second value in the dictionary, and same for the third list and value. We then chunk all three lists as we do the other lists. 
++ \ldots Advantage / -- \ldots Limitation / f \ldots Future
 
 
-\section{Further Development}
-
-We started this project with the idea that we would be able to train this algorithm to be able to distinguish historic texts from non-historic text. The idea is that an algorithm, when fed all of these features and texts as training data would realize that the amount of digits a text has is a pretty important feature on historic text and not on any other literary genre. However, due to Shakespeare's style, this was quite troublesome. There are seldom any digits in his texts that could be found by a neural network or machine learning algorithm. The project was then put on ice. 
-
-The idea, however, is not something that could be easily pivoted, given the right motivation and deadline. One could always create a neural network from these features to build a literature genre predictor. What could be interesting as well is to create an ensemble method such as Random Forests to, instead of trying to predict the genre of a text, try to learn which features are the most important to predict genre with. With our initial idea, we knew that digit count was quite important for historical text. As we were unable to create a neural network to predict genre, we might have been able to create some sort of machine learning algorithm (Random Forests) to find out what other feature might strongly correlate to historical data. 
-
-Shakespeare's works, however, are quite rich in genre components within his texts. This makes using his works to develop such an algorithm incredibly difficult. Instead it would be best to use Shakespeare's texts as a validation dataset to really put an AI algorithm to the test. Sadly, this was out of the scope of our project. However, this finding might prove useful for anyone working on literature genre prediction.
 %------------------------------------------------------------------------------------- (Contribution)
 \section{Contributions}
 \begin{itemize}
@@ -543,22 +347,27 @@ Shakespeare's works, however, are quite rich in genre components within his text
   \item Inti Gabriel Mendoza Estrada \\ (design, coding, application, report writing)
   \item Jürgen Suntinger-Schrampf \\ (design, coding, application, report writing)
 \end{itemize}
-%------------------------------------------------------------------------------------- (Contribution-ENDE)
 
 
-
-
-
-%% ---- Bibliography ----
+%------------------------------------------------------------------------------------- (References)
 %% BibTeX users should specify bibliography style 'splncs04'.
 %% References will then be sorted and formatted in the correct style.
 %%
 \bibliographystyle{splncs04}
-\bibliography{bookReferences}
+\bibliography{bookReferences.bib}
+
+
+%
+%da eine onlineplatofrm für fingerprints naschauen, einen host
+%https://www.semanticscholar.org/paper/Literature-Fingerprinting%3A-A-New-Method-for-Visual-Keim-Oelke/474178dae941d135190ba98cfb7c3aa67924b09b
+%https://www.dw.com/en/whodunit-how-fingerprinting-has-inspired-writers/a-19516521
+%https://physicsworld.com/a/literary-fingerprints/
+%The foundation of our design was the result of three references
+
 
 
 
 
 
 \end{document}
-%------------------------------------------------------------------------------------- (Dokument-ENDE)
+
