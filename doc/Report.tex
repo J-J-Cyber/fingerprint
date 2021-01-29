@@ -11,10 +11,8 @@
 % to display URLs in blue roman font according to Springer's eBook style:
 \renewcommand\UrlFont{\color{blue}\rmfamily}
 \usepackage{subfigure}
-\usepackage{minted}
-
-
-%------------------------------------------------------------------------------------- (LIBRARIIES-END)
+\usepackage{listings}
+\usepackage[english]{babel}
 
 
 % Default fixed font does not support bold face
@@ -57,11 +55,6 @@ showstringspaces=false
 
 % Python for inline
 \newcommand\pythoninline[1]{{\pythonstyle\lstinline!#1!}}
-%------------------------------------------------------------------------------------- (DO NOT DELETE-ENDE)
-
-
-
-
 
 
 %------------------------------------------------------------------------------------- (Dokument)
@@ -79,7 +72,7 @@ Jürgen Suntinger-Schrampf\inst{1}\orcidID{00630894}}
 % If there are more than two authors, 'et al.' is used.
 \institute{TU Graz, Austria \\ GROUP 11}
 \maketitle              % typeset the header of the contribution
-%------------------------------------------------------------------------------------- (Title-ENDE)
+
 
 %------------------------------------------------------------------------------------- (Abstract)
 \begin{abstract}
@@ -87,10 +80,8 @@ The human is the best pattern recognition system on the whole world and has no p
 
 \end{abstract}
 \keywords{Document fingerprint  \and Digital libraries \and Visualisation}
-%------------------------------------------------------------------------------------- (Abstract-ENDE)
 
 
-XXXXXXXX
 %------------------------------------------------------------------------------------- (Introduction)
 \section{Introduction}
 As the world enters an era defined by \textit{big data}, more and more information is being actively accrued. This vast amount of data is not immediately available to people. It must now be accessible. What libraries did for physical books, digital libraries are doing for digital data. Challenges begin to appear when you consider that data can come in a vast array of ways (on top of the actual amount of data). When challenges appear, however, their solutions end up, most often than not, incredibly useful. Digital libraries not only let you access texts, papers, books. You are able to access videos, images, 3D models\ldots What makes digital libraries so incredibly useful lies in the fields it comprises: Computer Science, Information Science, and Information Visualisation - to name a few. 
@@ -99,29 +90,267 @@ In Computer Science comes something called \textit{Natural Language Processing} 
 
 What if you could search through a text based on the emotions of sentences? What if you could find texts that are easy to read based on sentence length? What if you could find texts to improve your language skills based on sentence complexity? What if you could use NLP to train a Neural Network to guess the genre of a text? This is the motivation that made us develop a tool that is able to create a visual "fingerprint" of a document to compare and contrast entire texts against others simultaneously on top of being able to compare and contrast sections within a given text.
 
+%##################################################################
 
-
-Used data
-was war die größte dokumente die processed wurden.
-damit verbunden ist eine längere berechnungszeit
+%------------------------------------------------------------------------------------- (Related Work)
+% section with similar systems you know
+\section{Related Work}
+During our research process we found some resources which where quite related to that specific fingerprint-topic, but didn't offered that analytical tool in a direct way, as you can see below.
 
 \begin{figure}
     \centering
-    \subfigure[]{\includegraphics[width=0.4\textwidth]{doc/img/heatmap-without-meta.png}} 
-    \subfigure[]{\includegraphics[width=0.4\textwidth]{doc/img/heatmap-with-meta.png}}
-    \caption{(a) Heatmap without metadata (b) Heatmap with metadata}
-    \label{fig:foobar}
+    \subfigure[]{\includegraphics[width=0.33\textwidth]{doc/img/circular.jpg}} 
+    \subfigure[]{\includegraphics[width=0.33\textwidth]{doc/img/density-plot.png}} 
+    \caption{(a) Word frequency per Document \href{https://www.123rf.com/photo_36990141_stock-vector-infographics-with-sound-waves-on-world.html}{Copyright to Vladimir Arkatov} (b) \label{density-plot} Our Implementation}
+    \label{fig:circle-digram}
 \end{figure}
+
+\begin{figure}
+    \centering
+    \subfigure[]{\includegraphics[width=0.33\textwidth]{doc/img/raw.png}}
+    \subfigure[]{\includegraphics[width=0.33\textwidth]{doc/img/raw-02.png}}
+    \caption{\href{https://rawgraphs.io}{Userinterface from RawGraphs-processing}}
+    \label{fig:website-reference}
+\end{figure}
+
+
+%>>>>>>>>>>>
+%------------------------------------------------------------------------------------- (Implementation)
+\section{Implementation}
+Based on research process, we started to build up our fingerprint-implementation which should provide the user a clean look and feel (of the interface), while being also able to easily handle interactive data exploration.
+
+\begin{figure}
+    \centering
+    \subfigure[]{\includegraphics[width=0.33\textwidth]{doc/img/startpage.png}}
+    \subfigure[]{\includegraphics[width=0.33\textwidth]{doc/img/multi-selection.png}}
+    \caption{(a) Startpage (b) multi feature selection}
+    \label{fig:gui}
+\end{figure}
+
+%------------------------------------------------------------------------------------- (DEV-Environment)
+\subsection{Development environment (language, libraries, ...)}
+
+\begin{itemize}
+    \item \href{https://www.python.org/downloads/}{Python3}
+    \item Python3 libraries
+    \begin{itemize}
+        \item socketserver
+        \item http
+        \item time
+        \item os
+        \item platform
+        \item numpy
+        \item nltk
+        \item sys
+        \item platform
+        \item glob
+        \item seaborn
+        \item matplotlib
+        \item pandas
+    \end{itemize}
+    \item Visual libraries 
+    \begin{itemize}
+        \item D3
+        \item P5 (legacy) it was used for circular density-plot (see Fig. \ref{density-plot})
+    \end{itemize}
+    \item Web Browser
+    \begin{itemize}
+        \item \href{https://www.mozilla.org/de/firefox/new/}{Firefox 84.0.2}
+    \end{itemize}
+    \item IDE
+    \begin{itemize}
+        \item \href{https://www.jetbrains.com/de-de/pycharm/}{pyCharm}
+    \end{itemize}
+\end{itemize}
+
+
+%------------------------------------------------------------------------------------- (Implemented Functionality)
+\subsection{Implemented functionalities/features}
+
+\begin{itemize}
+    \item Feature extraction
+    \begin{itemize}
+        \item words per sentence
+        \item length per sentence
+        \item richness per sentence
+        \item richness per 100 words
+        \item richness per sentence stemm
+        \item richness per 100 words stemm
+        \item sentiment per sentence
+        \item digit count per sentence
+    \end{itemize}
+    \item Drag \& Drop
+    \begin{itemize}
+        \item single Feature selection
+        \item multi Feature selection
+    \end{itemize}
+    \item dynamic and interactive visual representation of calculated data in a 20 to 20 matrix 
+    \begin{figure}
+        \centering
+        \subfigure[]{\includegraphics[width=0.51\textwidth]{doc/img/result/server-result.png}} 
+        \caption{(a) mutiple results for multiple files}
+        \label{fig:heatmap}
+    \end{figure}
+    \item metadata information by driving over a field. \\
+    \textbf{Note} At the moment deactivated. The reason was a strange beahaviour from D3 which only did that for one file, when multiple files where calculated.
+    \begin{figure}
+        \centering
+        \subfigure[]{\includegraphics[width=0.24\textwidth]{doc/img/heatmap-without-meta.png}} 
+        \subfigure[]{\includegraphics[width=0.24\textwidth]{doc/img/heatmap-with-meta.png}}
+        \caption{(a) Heatmap without metadata (b) Heatmap with metadata}
+        \label{fig:metdata}
+    \end{figure}
+\end{itemize}
+
+
+
+%------------------------------------------------------------------------------------- (Implemented-Userflow)
+\subsection{Description of supported user operations (workflows)}
+muss der user etwas machen
+
+
+
+hier dann die Dinge beschreiben
+Web-App
+Drag and Drop
+Single-feature-selection
+Multi-feature-selection
+File-Selection
+interactive GUI
+dynamic display
+(formely) dynamic display with meta-data information
+vergleich zweier oder der selben datei (doppeltes laden erforderlich)
+
+
+
+
+%wie legt man die parameter bei word-stam fest
+%wie berechnet man die sachen
+%am ende kann man die heatmaps visuell analysieren und ein ranking machen
+
+
+
+%>>>>>>>>>>>
+
+%------------------------------------------------------------------------------------- (Demo)
+\section{Application demonstration}
+
+
+%------------------------------------------------------------------------------------- (Demo-walkthrew)
+\subsection{Demonstrate the supported user operations by a walkthrough of a hypothetical user Alice considering the used data}
+\begin{figure}
+    \centering
+    \subfigure[]{\includegraphics[width=1\textwidth]{doc/img/process.jpg}} 
+    \caption{(a) The overall user process and calculatin flow}
+    \label{fig:metdata}
+\end{figure}
+The overall process is, that the user starts the server 
+
+
+
+da Bild dann screenshotkombination einsetzne
+
+
+
+
+
+%------------------------------------------------------------------------------------- (Demo-Exploration)
+\subsection{Describe how and where searching and exploring are possible}
+am ende der pipeline werden die features (result features ) aufgelistet und ermöglichen dem nutzer die suche nach mustern.
+
+%------------------------------------------------------------------------------------- (Demo-Findings)
+\subsection{Describe interesting findings and observations you made when applying your solution to the data}
+
+da gibt es einen unterschied tragedy und comedy
+historie und poetry.
+da erkennt, macneh charaktere kurze sätze, andere wiederum längere.
+oder lange wörter ve
+
+bei historie, da sind megr zahlen und mehr datumsangaben
+
+
+
+%>>>>>>>>>>> Hauptpunkt
+%------------------------------------------------------------------------------------- (Future)
+\section{Discussion of advantages, limitations and future developments to do}
+
+1ter punkt
+es können mehrere file und features verechnet werden und verblichen werden  wir können bilder abspeichern wir sind platformunabhöngo, da es eine webapp ist und e s so auch aam handy funtkoiniert.
+es gibt 9 verschiedene features.
+
+2ter punkt
+bei limitationen
+es können nur textdateien verarbeitet werden.
+statische bilder (kein direkter verweis zum text)
+nur optischer vergleich möglich.
+
+3ter punkt
+verweis von heatmap auf text
+dynamisches ranking
+verbesserte interaktivit
+metadateneinblendung
+sortiermöglichkeit der dateien per drag and drop
+fileuploadverbesserung
+sortierung der dokumente
+(AM ENDE SOLLEN DIE FEATURES ÜBERWIEGEN, NICHT VERGESSEN)
+
+
+%------------------------------------------------------------------------------------- (References)
+\section{References}
+
+da eine onlineplatofrm für fingerprints naschauen, einen host
+https://www.semanticscholar.org/paper/Literature-Fingerprinting%3A-A-New-Method-for-Visual-Keim-Oelke/474178dae941d135190ba98cfb7c3aa67924b09b
+
+https://www.dw.com/en/whodunit-how-fingerprinting-has-inspired-writers/a-19516521
+
+
+https://physicsworld.com/a/literary-fingerprints/
+
+The foundation of our design was the result of three references
+
+WIE
+
+References Hints for the report:
+- NOT more than 10 pages + appendix
+- Make use of images/screenshots for your results
+
+- Make use of diagrams to show system architcute or workflows
+
+
+
+
+
+
+
+
+%------------------------------------------------------------------------------------- (References-ENDE)
+
+
+
+%######################################
+
+
+
+
+
+projekt-solution
+
+development environment, steht im readme
+
+implemented functionality
+da kommen die 8 punkte hin
+
+Used data
+Collect the entire works of William Shakespeare
+http://shakespeare.mit.edu/
+
+was war die größte dokumente die processed wurden.
+damit verbunden ist eine längere berechnungszeit
 
 wollten eine cleane oberfläche, die interactive ist
 
-
-%------------------------------------------------------------------------------------- (Introduction-ENDE)
-
-
 WIP
 similar systems you know
-
 
 WIE
 o Your project solution
@@ -162,6 +391,8 @@ cluster-meta data wurde anfang implementiert, um schneller dinge interpretieren 
 \end{figure}
 
 
+
+
 WIP
 Description of supported user operations (workflows)
 
@@ -177,56 +408,36 @@ user Alice considering the used data
            
 
 
-
-%------------------------------------------------------------------------------------- (References)
-\section{References}
-WIE
-
-References Hints for the report:
-- NOT more than 10 pages + appendix
-- Make use of images/screenshots for your results
-
-- Make use of diagrams to show system architcute or workflows
-
-
 \begin{figure}
     \centering
-    \subfigure[]{\includegraphics[width=0.5\textwidth]{doc/img/circular.jpg}} 
-    \caption{Word frequency per Document \href{https://www.123rf.com/photo_36990141_stock-vector-infographics-with-sound-waves-on-world.html}{Copyright to Vladimir Arkatov}}
-    \label{fig:circle-digram}
+    \subfigure[]{\includegraphics[width=0.9\textwidth]{img/process.jpg}} 
+    \caption{(a) Process}
+    \label{fig:process}
 \end{figure}
 
-
-\begin{figure}
-    \centering
-    \subfigure[]{\includegraphics[width=0.5\textwidth]{doc/img/raw.png}} 
-    \caption{\href{https://rawgraphs.io}{Designvorlage für Website}}
-    \label{fig:website-reference}
-\end{figure}
 
 
 
 
 
 %------------------------------------------------------------------------------------- (Handling)
-\newpage
 \section{Handling}
+
+
 WIP
 user tasks to support
 
-es gibt keine einschränkung bei der anzahl der dateien
-limits 
-es gibt lediglich ein limit beim zu verwendete
+es gibt keine einschränkung bei der anzahl der dateien TXT
+limits gibt es keine
+
 
 %------------------------------------------------------------------------------------- (Problems-ENDE)
 
 
-%------------------------------------------------------------------------------------- (Problems)
-\newpage
-\section{Problems}
-WIP
-Search poblems
-Exploration problem
+%------------------------------------------------------------------------------------- (XXXX)
+\section{XXXX}
+
+
 WIE
 \begin{itemize}
     \item[+] XXXXXXXXXXXX
@@ -248,13 +459,14 @@ mehr merhmacher dateiasuwahl muss derzeit noch zusätzlich die datei über der g
 
 
 Calculating the position of points in a circle
-https://stackoverflow.com/questions/5300938/calculating-the-position-of-points-in-a-circle
+\href{https://stackoverflow.com/questions/5300938/calculating-the-position-of-points-in-a-circle}{Stackoverflow}
+
 
 curveVertex
 dabei werden die Punktkorrdinaten auf einem Kreis berechnet und danach einzeln mittels vertex kurve verbunden
 
 
-%------------------------------------------------------------------------------------- (Problems-ENDE)
+%------------------------------------------------------------------------------------- (XXXXX-ENDE)
 
 
 
@@ -262,7 +474,7 @@ dabei werden die Punktkorrdinaten auf einem Kreis berechnet und danach einzeln m
 
 
 
-\newpage
+
 %------------------------------------------------------------------------------------- (Development of our Tool)
 \section{Development}
 In this section we divide the three areas of software engineering that were developed in the creation of our tool. 
@@ -278,102 +490,43 @@ Using NLP, we should be able to obtain features from a given text. Features such
 
 The \texttt{Natural Language Toolkit} (or NLTK) library is downloaded and installed into one's \texttt{Python} environment through the following line of code:
 
-\begin{minted}{python}
-nltk.download()
-\end{minted}
-
+%------------------------------------------------------------------------------------- (Python-NLTK-1)
+\lstinputlisting[language=Python]{doc/src/nltk-1.py}
+%------------------------------------------------------------------------------------- (Python-NLTK-1-ENDE)
 From the NLTK library we use the following functions:
 \begin{itemize}
-    \item[--] Sentence Tokenizer: from a text, return a list of the entire text separated per sentence.
-    \item[--] Word Tokenizer: from a text, return a list of the entire text separated per word.
-    \item[--] Porter Stemmer: from a given word, return the root of it using a Porter Stemmer algorithm.
-    \item[--] Stop Words: returns a list of all stop words from the English language (words with no inherent meaning - such as the words "the" and "a".)
-    \item[--] Sentiment Intensity Analyser: from a sentence, return a dictionary containing the negative, neutral, positive, and compound values from that sentence.
+    \item Sentence Tokenizer: from a text, return a list of the entire text separated per sentence.
+    \item Word Tokenizer: from a text, return a list of the entire text separated per word.
+    \item Porter Stemmer: from a given word, return the root of it using a Porter Stemmer algorithm.
+    \item Stop Words: returns a list of all stop words from the English language (words with no inherent meaning - such as the words "the" and "a".)
+    \item Sentiment Intensity Analyser: from a sentence, return a dictionary containing the negative, neutral, positive, and compound values from that sentence.
 \end{itemize}
 
 We imported them into our \texttt{Python} file as such:
 
-\begin{minted}{python}
-from nltk.tokenize import sent_tokenize, word_tokenize, \
-    TextTilingTokenizer
-from nltk.stem import PorterStemmer
-from nltk.corpus import stopwords
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-\end{minted}
-
-Our \pythoninline{class FeatureExtractor} is defined as follows:
-\begin{minted}{python}
-class FeatureExtractor(object):
-  exclude_stop_words =   True
-  stem_words =     True
-  filter_integers =   True
-  exclude_duplicates =  True
-
-  ps = None
-
-  average_word_length_per_sentence =  None
-  words_per_sentence =                None
-  length_per_sentence =               None
-  richness_per_sentence =             None
-  richness_per_x_words =              None
-  richness_per_sentence_stemmed =     None
-  richness_per_x_words_stemmed =      None
-  sentiment_per_sentence =            None
-  digit_count_per_sentence =          None
-
-  def __init__(self, exclude_stop_words = False, \
-        stem_words = False,  filter_integers = False, 
-        exclude_duplicates = False):
-    self.exclude_stop_words = exclude_stop_words 
-    self.stem_words = stem_words 
-    self.filter_integers = filter_integers
-    self.exclude_duplicates = exclude_duplicates
-
-    self.ps = PorterStemmer()
-\end{minted}
+%------------------------------------------------------------------------------------- (Python-NLTK-2)
+\lstinputlisting[language=Python]{doc/src/nltk-2.py}
+%------------------------------------------------------------------------------------- (Python-NLTK-2-ENDE)
+%------------------------------------------------------------------------------------- (Python-FeatureExtractor-ENDE)
 We will now elaborate on two method functions. One of them is able to extract features from the document, and the other is able to package the results into a format useful for heatmap creation.
 
-\begin{python}
-\input{src/file-1.py}
-\end{minted}
+%------------------------------------------------------------------------------------- (Python-getAverageWordLengthPerXWords)
+%\lstinputlisting[language=Python]{doc/src/getAverageWordLengthPerXWords.py}
+%------------------------------------------------------------------------------------- (Python-getAverageWordLengthPerXWords-ENDE)
 
-In the code snippet above, we are trying to get the average word length every \texttt{x} amount of words. To do this, we must first tokenize the \texttt{parameter} using a tokenizer from the NLTK library. The variables \texttt{tokens} contains a list of all words in the text. We then iterate through the words. At every word, we increase our word counter variable \texttt{word\_count} by one and our word length counter \texttt{word\_len} by the size of the current word we are looking at. Notices that we are only looking at words that are not exclusively a punctuation. Once our \texttt{word\_count} counter reaches \texttt{x}, then we append the value of the \texttt{word\_len} variable divided by our \texttt{x} onto our \textit{result} list. We then reset our two counter variables. Once we have gone through all words, if there are words that we have not accounted for yet, we append them now. Finally, we return our \texttt{result} list. This list will contain the average length of words every \texttt{x} words. 
+In the function \texttt{getAverageWordLengthPerXWords}, we are trying to get the average word length every \texttt{x} amount of words. To do this, we must first tokenize the \texttt{parameter} using a tokenizer from the NLTK library. The variables \texttt{tokens} contains a list of all words in the text. We then iterate through the words. At every word, we increase our word counter variable \texttt{word\_count} by one and our word length counter \texttt{word\_len} by the size of the current word we are looking at. Notices that we are only looking at words that are not exclusively a punctuation. Once our \texttt{word\_count} counter reaches \texttt{x}, then we append the value of the \texttt{word\_len} variable divided by our \texttt{x} onto our \textit{result} list. We then reset our two counter variables. Once we have gone through all words, if there are words that we have not accounted for yet, we append them now. Finally, we return our \texttt{result} list. This list will contain the average length of words every \texttt{x} words. 
 
-The other features follow a similar structure. If we want to get the average sentence length per \texttt{x} words, we would follow the snippet above but change the tokenizer method from using the word tokenizer to the sentence tokenizer. If we cared about getting the average sentence length of every length, we disregard the counters and the \texttt{x} variable, etc\ldots
+The other features follow a similar structure. If we want to get the average sentence length per \texttt{x} words, we would follow the snippet above but change the tokenizer method from using the word tokenizer to the sentence tokenizer. If we cared about getting the average sentence length of every length, we disregard the counters and the \texttt{x} variable. If we wanted to calculate richness, we would stem the words using the Porter Stemmer, which computes the ``roots" of words. We then count unique words. To calculate sentiment, we tokenize sentences and then pass them through the sentiment analyzer from the NLTK library. This returns a dictionary with values for positive, negative, neutral, and compound sentiment.
 
 The next step in our feature extraction script is to grab this resulting list and converting it into an $\texttt{n} \times \texttt{n}$ matrix. In our demo, we set our \texttt{n} to $20$. The way we did it can be seen in the snippet below.
 
-\begin{python}
-def chunkList(self, n, array):
-  avg = len(array) / float(n * n)
-  result = []
-  row = []
-  last = 0.0
+%------------------------------------------------------------------------------------- (Python-chunkList)
+%\lstinputlisting[language=Python]{doc/src/chunkList.py}
+%------------------------------------------------------------------------------------- (Python-chunkList-ENDE)
 
-  while last < len(array):
-    tmp = array[int(last):int(last + avg)]
-    row.append(0 if not tmp else (sum(tmp)/len(tmp), 2))
-    if len(row) == n and (last + avg) < len(array):
-      result.append(row)
-      row = []
-    last += avg
-  if len(result) == 19:
-    result.append(row)
+The function \textbf{chunkList} grabs a value for \texttt{n} and an array. We want to turn this list into a list of \texttt{n} lists each consisting of \texttt{n} amount of elements. To do this, it first compute the \texttt{avg} variable. This variable lets the algorithm how many elements of the array should be grouped together to end up with our required size. It divides the length of the array by $\texttt{n}^2$. The \texttt{while} loop iterates through the array initially grouping an \texttt{avg} amount of elements, grabbing the mean and appending it onto a \texttt{tmp} list. The \texttt{last} variable is added with \texttt{avg}. In the next iteration, the loop groups an \texttt{avg} amount of elements starting from the \textit{last} index. This is done \texttt{n} times. Once this occurs, the \texttt{tmp} list, which now contains \texttt{n} elements is added to the \texttt{result} variable. The \texttt{tmp} list is then reset. The loop continues until the \texttt{result} variable is of size $\texttt{n} \times \texttt{n}$ and the list is returned. 
 
-  return result
-\end{python}
-
-The function \textit{chunkList} grabs a value for \texttt{n} and an array. We want to turn this list into a list of \texttt{n} lists each consisting of \texttt{n} amount of elements. To do this, it first compute the \texttt{avg} variable. This variable lets the algorithm how many elements of the array should be grouped together to end up with our required size. It divides the length of the array by $\texttt{n}^2$. The \texttt{while} loop iterates through the array initially grouping an \texttt{avg} amount of elements, grabbing the mean and appending it onto a \texttt{tmp} list. The \texttt{last} variable is added with \texttt{avg}. In the next iteration, the loop groups an \texttt{avg} amount of elements starting from the \textit{last} index. This is done \texttt{n} times. Once this occurs, the \texttt{tmp} list, which now contains \texttt{n} elements is added to the \texttt{result} variable. The \texttt{tmp} list is then reset. The loop continues until the \texttt{result} variable is of size $\texttt{n} \times \texttt{n}$ and the list is returned. 
-
-This $\texttt{n} \times \texttt{n}$ list is fed to another script which is focused on creating a heatmap based off of the values in this list.
-\subsection{Back-End: Server}
-
-\subsection{Front-End}
-
-
-
-
-
+This $\texttt{n} \times \texttt{n}$ list is fed to another script which is focused on creating a heatmap based off of the values in this list. For the chunking of the sentiment of words, since we get a dictionary, we grab the first values of all dictionaries and put them into one list, then another list for the second value in the dictionary, and same for the third list and value. We then chunk all three lists as we do the other lists. 
 
 
 \section{Further Development}
@@ -384,7 +537,6 @@ The idea, however, is not something that could be easily pivoted, given the righ
 
 Shakespeare's works, however, are quite rich in genre components within his texts. This makes using his works to develop such an algorithm incredibly difficult. Instead it would be best to use Shakespeare's texts as a validation dataset to really put an AI algorithm to the test. Sadly, this was out of the scope of our project. However, this finding might prove useful for anyone working on literature genre prediction.
 %------------------------------------------------------------------------------------- (Contribution)
-\newpage
 \section{Contributions}
 \begin{itemize}
   \item Richard Hohensinner \\ (design, coding, application, report writing)
@@ -397,108 +549,13 @@ Shakespeare's works, however, are quite rich in genre components within his text
 
 
 
-
-%\section{First Section}
-%\subsection{A Subsection Sample}
-%Please note that the first paragraph of a section or subsection is
-%not indented. The first paragraph that follows a table, figure,
-%equation etc. does not need an indent, either.
-%
-%Subsequent paragraphs, however, are indented.
-%
-%\subsubsection{Sample Heading (Third Level)} Only two levels of
-%headings should be numbered. Lower level headings remain unnumbered;
-%they are formatted as run-in headings.
-%
-%\paragraph{Sample Heading (Fourth Level)}
-%The contribution should contain no more than four levels of
-%headings. Table~\ref{tab1} gives a summary of all heading levels.
-%
-%\begin{table}
-%\caption{Table captions should be placed above the
-%tables.}\label{tab1}
-%\begin{tabular}{|l|l|l|}
-%\hline
-%Heading level &  Example & Font size and style\\
-%\hline
-%Title (centered) &  {\Large\bfseries Lecture Notes} & 14 point, bold\\
-%1st-level heading &  {\large\bfseries 1 Introduction} & 12 point, bold\\
-%2nd-level heading & {\bfseries 2.1 Printing Area} & 10 point, bold\\
-%3rd-level heading & {\bfseries Run-in Heading in Bold.} Text follows & 10 point, bold\\
-%4th-level heading & {\itshape Lowest Level Heading.} Text follows & 10 point, italic\\
-%\hline
-%\end{tabular}
-%\end{table}
-%
-%
-%\noindent Displayed equations are centered and set on a separate
-%line.
-%\begin{equation}
-%x + y = z
-%\end{equation}
-%Please try to avoid rasterized images for line-art diagrams and
-%schemas. Whenever possible, use vector graphics instead (see
-%Fig.~\ref{fig1}).
-%
-%\begin{figure}
-%\includegraphics[width=\textwidth]{fig1.eps}
-%\caption{A figure caption is always placed below the illustration.
-%Please note that short captions are centered, while long ones are
-%justified by the macro package automatically.} \label{fig1}
-%\end{figure}
-%
-%\begin{theorem}
-%This is a sample theorem. The run-in heading is set in bold, while
-%the following text appears in italics. Definitions, lemmas,
-%propositions, and corollaries are styled the same way.
-%\end{theorem}
-%%
-%% the environments 'definition', 'lemma', 'proposition', 'corollary',
-%% 'remark', and 'example' are defined in the LLNCS documentclass as well.
-%%
-%\begin{proof}
-%Proofs, examples, and remarks have the initial word in italics,
-%while the following text appears in normal font.
-%\end{proof}
-%For citations of references, we prefer the use of square brackets
-%and consecutive numbers. Citations using labels or the author/year
-%convention are also acceptable. The following bibliography provides
-%a sample reference list with entries for journal
-%articles~\cite{ref_article1}, an LNCS chapter~\cite{ref_lncs1}, a
-%book~\cite{ref_book1}, proceedings without editors~\cite{ref_proc1},
-%and a homepage~\cite{ref_url1}. Multiple citations are grouped
-%\cite{ref_article1,ref_lncs1,ref_book1},
-%\cite{ref_article1,ref_book1,ref_proc1,ref_url1}.
-%%
 %% ---- Bibliography ----
-%%
 %% BibTeX users should specify bibliography style 'splncs04'.
 %% References will then be sorted and formatted in the correct style.
 %%
-%% \bibliographystyle{splncs04}
-%% \bibliography{mybibliography}
-%%
-%\begin{thebibliography}{8}
-%\bibitem{ref_article1}
-%5Author, F.: Article title. Journal \textbf{2}(5), 99--110 (2016)
-%
-%\bibitem{ref_lncs1}
-%Author, F., Author, S.: Title of a proceedings paper. In: Editor,
-%F., Editor, S. (eds.) CONFERENCE 2016, LNCS, vol. 9999, pp. 1--13.
-%Springer, Heidelberg (2016). \doi{10.10007/1234567890}
-%
-%\bibitem{ref_book1}
-%Author, F., Author, S., Author, T.: Book title. 2nd edn. Publisher,
-%Location (1999)
-%
-%\bibitem{ref_proc1}
-%Author, A.-B.: Contribution title. In: 9th International Proceedings
-%on Proceedings, pp. 1--2. Publisher, Location (2010)
-%
-%\bibitem{ref_url1}
-%LNCS Homepage, \url{http://www.springer.com/lncs}. Last accessed 4
-%Oct 2017
-%\end{thebibliography}
+\bibliographystyle{splncs04}
+\bibliography{bookReferences}
+
 
 
 
